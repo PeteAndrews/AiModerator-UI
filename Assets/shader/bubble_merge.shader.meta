@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 01b07e30606b44cbaa43d3e6e96f6eab
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _Video: {instanceID: 0}
+  - _Bubble: {instanceID: 0}
+  - _Mask: {instanceID: 0}
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
