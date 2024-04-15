@@ -6,6 +6,7 @@ using UnityEngine.Video;
 
 public class BubbleManager : MonoBehaviour
 {
+    private FrameJsonLoader loader = new FrameJsonLoader();
     private int gameTime;
 
     public List<int> bubbleEventTimes;
@@ -58,7 +59,7 @@ public class BubbleManager : MonoBehaviour
     {
         int frameNumber = time * 25;
         //Debug.Log(frameNumber);
-        FrameData framedata = FrameJsonLoader.LoadFrameData(frameNumber);
+        FrameData framedata = loader.LoadFrameData(frameNumber);
         //Debug.Log(framedata.track_ids[0]);
         
         GameObject bubble = Instantiate(bubblePrefab, canvasTransform);
