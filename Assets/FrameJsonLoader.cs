@@ -15,7 +15,7 @@ public class FrameJsonLoader : MonoBehaviour
     
     public FrameData LoadFrameData(int frameNumber)
     {
-        string frameNumberString = frameNumber.ToString("D4");
+        string frameNumberString = frameNumber.ToString("D6");
         string jsonFilePath = Path.Combine(jsonFolderPath, "frame_" + frameNumberString + ".json");
         if (File.Exists(jsonFilePath))
         {

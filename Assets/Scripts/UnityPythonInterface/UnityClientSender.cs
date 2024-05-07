@@ -7,7 +7,8 @@ using NetMQ.Sockets;
 
 public class UnityClientSender : MonoBehaviour
 {
-    public UnityClientSender Instance { get; private set; }
+    public static UnityClientSender Instance { get; private set; }
+
     private void Awake()
     {
         if (Instance == null)
@@ -27,6 +28,19 @@ public class UnityClientSender : MonoBehaviour
         {
             DialogueEventLoader.Instance.OnSendEventData += HandleSendEventData;
         }
+
+    }
+    public void ReceiveButtonName(string buttonName)
+    {
+        Debug.Log("Button Clicked, Button Name: " + buttonName);
+        var data = new
+        {
+            EventName = "Select Event",
+            Option = buttonName
+        };
+        string jsonData = JsonConvert.SerializeObject(data);
+        SendEvent(jsonData);
+        //create a json dict of EventName = SelectEvent
     }
     private void HandleSendEventData(EventData eventData)
     {
