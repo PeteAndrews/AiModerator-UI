@@ -85,7 +85,7 @@ public class DialogueEventLoader : MonoBehaviour
                 float eventTime = sortedEventTimes[0];
                 if (eventsDictionary.TryGetValue(eventTime, out EventData eventData))
                 {
-                    Debug.Log("Raised Event: " + eventData.ResponseTopic);
+                    Debug.Log("Raised Event at: " + globalTimer.Time + "/" + globalTimer.CurrentFrame + "with event data: " + eventData.ResponseTopic);
                     // raise event here to notify socket server to send data to python server
                     OnSendEventData?.Invoke(eventData);
 

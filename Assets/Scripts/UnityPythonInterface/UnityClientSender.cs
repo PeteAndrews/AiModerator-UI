@@ -8,6 +8,9 @@ using NetMQ.Sockets;
 public class UnityClientSender : MonoBehaviour
 {
     public static UnityClientSender Instance { get; private set; }
+    private bool isWaitingForResponse = false;
+    public string mode;
+
 
     private void Awake()
     {
@@ -28,20 +31,113 @@ public class UnityClientSender : MonoBehaviour
         {
             DialogueEventLoader.Instance.OnSendEventData += HandleSendEventData;
         }
+        if(RetrievePushData.Instance != null)
+        {
+            RetrievePushData.Instance.OnSetEvent += OnSetResponseReceived;
+        }
 
     }
-    public void ReceiveButtonName(string buttonName)
+    public void SendMoreInfoRequest()
     {
-        Debug.Log("Button Clicked, Button Name: " + buttonName);
+        StartCoroutine(HandleInfoButtonClick("more info"));
+
+    }
+    public void MoreInfoEvent(string moreInfoData)
+    {
         var data = new
         {
-            EventName = "Select Event",
-            Option = buttonName
+            EventName = "More Info Event",
+            Option = "more info",
+            Keyword = moreInfoData
         };
         string jsonData = JsonConvert.SerializeObject(data);
         SendEvent(jsonData);
-        //create a json dict of EventName = SelectEvent
     }
+
+    public void ReceiveButtonName(string buttonName)
+    {
+        StartCoroutine(HandleButtonClick(buttonName));
+
+    }
+    private IEnumerator HandleInfoButtonClick(string buttonName)
+    {
+        yield return SendEventAndWaitForResponse("Set Event", buttonName);
+        Debug.Log("Send More Info Request");
+        var data = new
+        {
+            EventName = "More Info Request Event"
+        };
+        string jsonData = JsonConvert.SerializeObject(data);
+        SendEvent(jsonData);
+
+    }
+    private IEnumerator HandleButtonClick(string buttonName)
+    {
+        // Send the set event
+        yield return SendEventAndWaitForResponse("Set Event", buttonName);
+        Debug.Log("Received response for set event, proceeding with select event.");
+
+        var data = new
+        {
+            EventName = "Select Event",
+            Option = buttonName,
+        };
+        string jsonData = JsonConvert.SerializeObject(data);
+        // Once the response is received, send the select event
+        SendEvent(jsonData);
+
+    }
+
+    private IEnumerator SendEventAndWaitForResponse(string eventName, string option)
+    {
+        Debug.Log($"Sending {eventName} and waiting for response...");
+
+        var data = new
+        {
+            EventName = eventName,
+            Option = option
+        };
+        string jsonData = JsonConvert.SerializeObject(data);
+        SendEvent(jsonData);
+
+        isWaitingForResponse = true;
+
+        // Wait until the response is received
+        while (isWaitingForResponse)
+        {
+            yield return null; // Wait for one frame
+        }
+
+        Debug.Log($"Response received for {eventName}, continuing...");
+    }
+
+    public void OnSetResponseReceived()
+    {
+        Debug.Log("Set response received, allowing continuation.");
+        isWaitingForResponse = false;
+    }
+    public void SendEventNoResponse(string eventName, string option)
+    {
+        var data = new
+        {
+            EventName = eventName,
+            Option = option
+        };
+        string jsonData = JsonConvert.SerializeObject(data);
+        SendEvent(jsonData);
+    }
+    public void SendEventContinueInteraction(string eventName, string userInput)
+    {
+        var data = new
+        {
+            EventName = eventName,
+            UserInput = userInput,
+            Mode = mode
+        };
+        string jsonData = JsonConvert.SerializeObject(data);
+        SendEvent(jsonData);
+    }
+
     private void HandleSendEventData(EventData eventData)
     {
         //Serialise the eventData object to JSON
@@ -62,6 +158,7 @@ public class UnityClientSender : MonoBehaviour
 
         }
     }
+
     void OnDestroy()
     {
         if (DialogueEventLoader.Instance != null)

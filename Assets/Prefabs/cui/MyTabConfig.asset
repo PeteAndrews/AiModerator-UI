@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bdd1a5e11f31104aae7cc04e311ba2b, type: 3}
+  m_Name: MyTabConfig
+  m_EditorClassIdentifier: 
+  tabs:
+  - tabName: cuiTab-factCheck
+    tabPrefab: {fileID: 1923293670180470580, guid: ebd6994ae9d36174c8dfbc089c20b95e, type: 3}
+    buttonPrefab: {fileID: 6824004147599390939, guid: 29b98a0c031f2f3468088b11f3ec6a49, type: 3}
+    tabInstance: {fileID: 0}
+    buttonInstance: {fileID: 0}
+  - tabName: cuiTab-polarity
+    tabPrefab: {fileID: 7501304580307064445, guid: f56b075a3b4252e44ada1a80080fc720, type: 3}
+    buttonPrefab: {fileID: 4196818807909797520, guid: bd6f032b13265084a979aabf08c4a50b, type: 3}
+    tabInstance: {fileID: 0}
+    buttonInstance: {fileID: 0}
+  - tabName: cuiTab-moreInfo
+    tabPrefab: {fileID: 6362652091593219528, guid: f159f0a785f8d1d4ba35bea695b9333d, type: 3}
+    buttonPrefab: {fileID: 6145302448564898998, guid: 348f7f03fab884d489f1b875fe93567a, type: 3}
+    tabInstance: {fileID: 0}
+    buttonInstance: {fileID: 0}
+  - tabName: cuiTab-manifesto
+    tabPrefab: {fileID: 7501304580307064445, guid: 555c013b98b4195479843f5931bc7ea0, type: 3}
+    buttonPrefab: {fileID: 4196818807909797520, guid: 371382d90b7837743b956a0af9ada4b6, type: 3}
+    tabInstance: {fileID: 0}
+    buttonInstance: {fileID: 0}

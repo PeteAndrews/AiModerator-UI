@@ -16,6 +16,9 @@ public class PythonServerDataContainer
 {
     public string eventName;
     public string eventData;
+    public string articleNames;
+    public string functionName;
+    public bool isHyperText=false;
 }
 
 public class RetrievePushData
@@ -33,8 +36,15 @@ public class RetrievePushData
     private readonly Thread thread;
     private volatile bool streaming;
 
+
     public delegate void OptionsEventHandler(string eventName, string[] text);
     public event OptionsEventHandler OnOptionsEvent;
+    public delegate void GptEventHandler(string eventName, string text, string functionName, string articleName, bool isHyperText);
+    public event GptEventHandler OnGptEvent;
+    public delegate void MoreInfoResponseHandler(string eventName, string data);
+    public event MoreInfoResponseHandler OnMoreInfoResponseEvent;
+    public delegate void SetEventHandler();
+    public event SetEventHandler OnSetEvent;
     //will need another event for the gpt events
 
     public RetrievePushData()
@@ -61,8 +71,8 @@ public class RetrievePushData
                 while (streaming)
                 {
                     string input = socket.ReceiveFrameString();
-                    PythonServerDataContainer data = JsonConvert.DeserializeObject<PythonServerDataContainer>(input);
-                    HandleInputEvent(data.eventName, data.eventData);
+                    PythonServerDataContainer data = JsonConvert.DeserializeObject<PythonServerDataContainer>(input);//make sure container can retain information from gpt event as well
+                    HandleInputEvent(data);
                     callback(data.eventName, data.eventData);
                     try
                     {
@@ -84,20 +94,29 @@ public class RetrievePushData
         Debug.Log("ThreadFunction ended");
     }
 
-    private void HandleInputEvent(string eventName, string eventData)
+    private void HandleInputEvent(PythonServerDataContainer data)
     {
 
-        if (eventName == "Options Event")
+        if (data.eventName == "Options Event")
         {
             // Dispatch the event invocation to the main thread
-            string[] eventDataSplit = splitText(eventData);
-            MainThreadDispatcher.Enqueue(() => OnOptionsEvent?.Invoke(eventName, eventDataSplit));
+            string[] eventDataSplit = splitText(data.eventData);
+            MainThreadDispatcher.Enqueue(() => OnOptionsEvent?.Invoke(data.eventName, eventDataSplit));
 
+        }
+        else if(data.eventName == "More Info Response Event"){
+            MainThreadDispatcher.Enqueue(() => OnMoreInfoResponseEvent?.Invoke(data.eventName, data.eventData));
+        }
+        else if(data.eventName == "Set Response Event")
+        {
+            MainThreadDispatcher.Enqueue(() => OnSetEvent?.Invoke());
         }
         else
         {
             // Dispatch any Unity API calls to the main thread as well
-            MainThreadDispatcher.Enqueue(() => Debug.Log($"Received event: {eventName}, with data: {eventData}"));
+            //MainThreadDispatcher.Enqueue(() => Debug.Log($"Received event: {eventName}, with data: {eventData}"));
+            MainThreadDispatcher.Enqueue(() => OnGptEvent?.Invoke(data.eventName, data.eventData, data.functionName, data.articleNames, data.isHyperText));
+
         }
     }
     private string[] splitText(string text)

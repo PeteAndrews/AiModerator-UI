@@ -45,7 +45,8 @@ public class OptionButtonManager : MonoBehaviour
     public List<NamedButtonPrefab> optionButtonPrefabs;
     private Dictionary<string, NamedButtonPrefab> optionsButtonDict;
     public RectTransform startPosition;
-
+    private Dictionary<string, OptionsButton> activeButtons = new Dictionary<string, OptionsButton>();
+        
     private void OnEnable()
     {
         RetrievePushData.Instance.OnOptionsEvent += HandlePythonNetworkInput;
@@ -56,6 +57,12 @@ public class OptionButtonManager : MonoBehaviour
     {
         RetrievePushData.Instance.OnOptionsEvent -= HandlePythonNetworkInput;
 
+    }
+    void Start()
+    {
+        //get the canvas RectTransform in parent gameobject
+        canvasTransform = transform.parent.GetComponent<RectTransform>();
+        CreatePrefabDictionary();
     }
 
     private void HandlePythonNetworkInput(string eventName, string[] text)
@@ -70,6 +77,11 @@ public class OptionButtonManager : MonoBehaviour
         FrameData frameData = loader.LoadFrameData((int)globalTimer.CurrentFrame);
         foreach (string option in options)
         {
+            if(CuiManager.Instance.activeTab != null && CuiManager.Instance.activeTab.name == option)
+            {
+                //update event - act as if onclick
+                UnityClientSender.Instance.ReceiveButtonName(option);
+            }
             CreateButton(option, eventIndex, frameData);
         }
     }
@@ -82,14 +94,23 @@ public class OptionButtonManager : MonoBehaviour
         button.transform.SetParent(canvasTransform, false); // The 'false' parameter preserves local orientation and scale instead of world orientation and scale
 
         OptionsButton optionsButtonScript = button.GetComponent<OptionsButton>();
-        if (optionsButtonScript != null)
+        if (optionsButtonScript != null && CuiManager.mapTabs.ContainsKey(buttonName))
         {
             // Register the ReceiveButtonName method from UnityClientSender to handle button clicks
 
+            //optionsButtonScript.OnButtonClicked += UnityClientSender.Instance.ReceiveButtonName;
+            optionsButtonScript.OnButtonClicked += CuiManager.Instance.HandleOptionButtonOnClick;
+            optionsButtonScript.OnButtonClicked += CuiManager.Instance.ActivateTab;
+            optionsButtonScript.OnButtonClicked += DestroyAllActiveButtons;
+            StartCoroutine(DestroyButtonAfterDelay(buttonName, 100f));
+
+
+        }
+        else
+        {
+            //TODO: Implement a different UI for buttons that don't have a corresponding tab
             optionsButtonScript.OnButtonClicked += UnityClientSender.Instance.ReceiveButtonName;
-            Debug.Log("Event subscribed for button: " + buttonName);
-
-
+            Debug.Log("Load Different UI -- TODO: " + buttonName);
         }
         if (eventIndex == 0)
         {
@@ -104,22 +125,9 @@ public class OptionButtonManager : MonoBehaviour
         buttonRectTransform.anchoredPosition = _frameTie + optionsButtonDict[buttonName].position;
         //buttonRectTransform.anchoredPosition = _frameTie + new Vector2(240, 50); 
         buttonText.text = buttonName;
-    }
-    void Start()
-    {
-        //get the canvas RectTransform in parent gameobject
-        canvasTransform = transform.parent.GetComponent<RectTransform>();
-        CreatePrefabDictionary();
-
-
-
+        activeButtons.Add(buttonName, optionsButtonScript);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     private void CreatePrefabDictionary()
     {
         optionsButtonDict = new Dictionary<string, NamedButtonPrefab>();
@@ -134,6 +142,20 @@ public class OptionButtonManager : MonoBehaviour
                 Debug.LogError($"Duplicate prefab name found in list: {np.name}");
             }
         }
+    }
+    private void DestroyAllActiveButtons(string name)
+    {
+        foreach (var button in activeButtons.Values)
+        {
+            button.DestroyButton();
+        }
+        activeButtons.Clear();
+    }
+    IEnumerator DestroyButtonAfterDelay(string buttonName, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        DestroyAllActiveButtons("null");
+        CuiManager.Instance.ActivateTabButtons();
     }
 
     private void OnDestroy()
