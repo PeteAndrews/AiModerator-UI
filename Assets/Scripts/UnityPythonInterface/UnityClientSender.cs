@@ -42,17 +42,6 @@ public class UnityClientSender : MonoBehaviour
         StartCoroutine(HandleInfoButtonClick("more info"));
 
     }
-    public void MoreInfoEvent(string moreInfoData)
-    {
-        var data = new
-        {
-            EventName = "More Info Event",
-            Option = "more info",
-            Keyword = moreInfoData
-        };
-        string jsonData = JsonConvert.SerializeObject(data);
-        SendEvent(jsonData);
-    }
 
     public void ReceiveButtonName(string buttonName)
     {
@@ -116,6 +105,18 @@ public class UnityClientSender : MonoBehaviour
         Debug.Log("Set response received, allowing continuation.");
         isWaitingForResponse = false;
     }
+    public void MoreInfoEvent(string moreInfoData)
+    {
+        var data = new
+        {
+            EventName = "More Info Event",
+            Option = "more info",
+            Keyword = moreInfoData
+        };
+        string jsonData = JsonConvert.SerializeObject(data);
+        SendEvent(jsonData);
+    }
+
     public void SendEventNoResponse(string eventName, string option)
     {
         var data = new
@@ -137,14 +138,16 @@ public class UnityClientSender : MonoBehaviour
         string jsonData = JsonConvert.SerializeObject(data);
         SendEvent(jsonData);
     }
-
-    private void HandleSendEventData(EventData eventData)
+    public void SendManifestoEvent(string party)
     {
-        //Serialise the eventData object to JSON
-        string jsonData = JsonConvert.SerializeObject(eventData);
-        AsyncIO.ForceDotNet.Force();
+        var data = new
+        {
+            EventName = "Manifesto Event",
+            UserInput = party,
+            Mode = mode
+        };
+        string jsonData = JsonConvert.SerializeObject(data);
         SendEvent(jsonData);
-
     }
     private void SendEvent(string data)
     {
@@ -158,6 +161,16 @@ public class UnityClientSender : MonoBehaviour
 
         }
     }
+    private void HandleSendEventData(EventData eventData)//HandleSendSystemEventData
+    {
+        //Serialise the eventData object to JSON
+        string jsonData = JsonConvert.SerializeObject(eventData);
+        AsyncIO.ForceDotNet.Force();
+        SendEvent(jsonData);
+
+    }
+
+
 
     void OnDestroy()
     {

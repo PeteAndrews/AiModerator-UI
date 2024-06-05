@@ -27,7 +27,7 @@ public class CuiScrollView : MonoBehaviour
             if (messageUI.hyperlinkHandler != null)
             {
                 messageUI.hyperlinkHandler.enabled = hyperText.Contains("<link=");
-                messageUI.hyperlinkHandler.Mode = functionName;
+                //messageUI.hyperlinkHandler.Mode = functionName;
                 //this is where want to set the property of the event
             }
         }
@@ -41,13 +41,17 @@ public class CuiScrollView : MonoBehaviour
         string hyperText = "What do you think? <link=opinion><color=blue>Share your opinion</color></link>. Want more info? <link=followUp><color=blue>Find out more</color></link>.";
         SetupMessage(time, hyperText, "select interaction option", userInputFollowUpPrefab, contentTransform);
     }
-
+    public void AddManifestoActivationMessage(string time)
+    {
+        string hyperText = "Compare to the <link=manifesto><color=blue> Republican </color></link> or <link=manifesto><color=blue>Democrat </color></link> Manifesto.";
+        SetupMessage(time, hyperText, "select interaction option", userInputFollowUpPrefab, contentTransform);
+    }
     public void AddHyperLinkMessage(string time, string mainText, string functionName)
     {
         //string hyperText = ConvertToHyperlinks(mainText);
         SetupMessage(time, mainText, functionName, messageReceivedPrefab, contentTransform);
     }
-    public void AddMessage(string time, string mainText, bool scrollBottom)
+    public void AddNonInteractiveMessage(string time, string mainText, bool scrollBottom)
     {
         // Instantiate the message prefab under the content panel
         GameObject messageInstance = Instantiate(messageReceivedPrefab, contentTransform);
@@ -104,6 +108,8 @@ public class CuiScrollView : MonoBehaviour
         // Assuming ScrollView uses a Unity UI ScrollRect component
         GetComponent<UnityEngine.UI.ScrollRect>().normalizedPosition = new Vector2(0, 0);
     }
+    //rework hyperlink converter
+    /*
     public static string ConvertToHyperlinks(string input)
     {
         string[] elements = input.Split(',');
@@ -122,5 +128,5 @@ public class CuiScrollView : MonoBehaviour
         stringBuilder.Append(" for more info."); // Appends this text after all links
         return stringBuilder.ToString();
     }
-
+    */
 }

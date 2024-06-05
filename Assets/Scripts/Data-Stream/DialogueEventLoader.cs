@@ -45,6 +45,7 @@ public class DialogueEventLoader : MonoBehaviour
     private List<float> sortedEventTimes;
    
     protected GlobalTimer globalTimer;
+    public EventData currentEventData;
 
 
     private void Awake()
@@ -86,6 +87,7 @@ public class DialogueEventLoader : MonoBehaviour
                 if (eventsDictionary.TryGetValue(eventTime, out EventData eventData))
                 {
                     Debug.Log("Raised Event at: " + globalTimer.Time + "/" + globalTimer.CurrentFrame + "with event data: " + eventData.ResponseTopic);
+                    currentEventData = eventData;
                     // raise event here to notify socket server to send data to python server
                     OnSendEventData?.Invoke(eventData);
 

@@ -1072,6 +1072,7 @@ GameObject:
   - component: {fileID: 4031538882184513907}
   - component: {fileID: 9011906521256975770}
   - component: {fileID: 4964214377956373586}
+  - component: {fileID: 8295513200902336024}
   m_Layer: 5
   m_Name: cuiTab-polarity
   m_TagString: Untagged
@@ -1142,6 +1143,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8295513200902336024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7501304580307064445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff8f52e1477f1bf41926c512239f5ea0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9067496879998750685
 GameObject:
   m_ObjectHideFlags: 0

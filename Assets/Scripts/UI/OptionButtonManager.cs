@@ -36,17 +36,16 @@ public class OptionButtonManager : MonoBehaviour
         globalTimer = GlobalTimer._instance;
 
     }
+    private TabManager tabManager;
     private FrameJsonLoader loader = new FrameJsonLoader();
     private RectTransform canvasTransform;
     private GlobalTimer globalTimer;
     private Vector2 _frameTie;
-    public GameObject optionsButtonPrefab;
     public List<int> buttonEventPersons;
     public List<NamedButtonPrefab> optionButtonPrefabs;
     private Dictionary<string, NamedButtonPrefab> optionsButtonDict;
-    public RectTransform startPosition;
     private Dictionary<string, OptionsButton> activeButtons = new Dictionary<string, OptionsButton>();
-        
+      
     private void OnEnable()
     {
         RetrievePushData.Instance.OnOptionsEvent += HandlePythonNetworkInput;
@@ -60,11 +59,28 @@ public class OptionButtonManager : MonoBehaviour
     }
     void Start()
     {
-        //get the canvas RectTransform in parent gameobject
         canvasTransform = transform.parent.GetComponent<RectTransform>();
         CreatePrefabDictionary();
     }
-
+    public void Initialize(TabManager tabManager)
+    {
+        this.tabManager = tabManager;
+    }
+    private void CreatePrefabDictionary()
+    {
+        optionsButtonDict = new Dictionary<string, NamedButtonPrefab>();
+        foreach (NamedButtonPrefab np in optionButtonPrefabs)
+        {
+            if (!optionsButtonDict.ContainsKey(np.name))
+            {
+                optionsButtonDict.Add(np.name, np);
+            }
+            else
+            {
+                Debug.LogError($"Duplicate prefab name found in list: {np.name}");
+            }
+        }
+    }
     private void HandlePythonNetworkInput(string eventName, string[] text)
     {
         // Handle the event
@@ -77,7 +93,7 @@ public class OptionButtonManager : MonoBehaviour
         FrameData frameData = loader.LoadFrameData((int)globalTimer.CurrentFrame);
         foreach (string option in options)
         {
-            if(CuiManager.Instance.activeTab != null && CuiManager.Instance.activeTab.name == option)
+            if(tabManager.activeTab != null && tabManager.activeTab.name == option)
             {
                 //update event - act as if onclick
                 UnityClientSender.Instance.ReceiveButtonName(option);
@@ -94,13 +110,13 @@ public class OptionButtonManager : MonoBehaviour
         button.transform.SetParent(canvasTransform, false); // The 'false' parameter preserves local orientation and scale instead of world orientation and scale
 
         OptionsButton optionsButtonScript = button.GetComponent<OptionsButton>();
-        if (optionsButtonScript != null && CuiManager.mapTabs.ContainsKey(buttonName))
+        if (optionsButtonScript != null && tabManager.mapTabs.ContainsKey(buttonName))
         {
             // Register the ReceiveButtonName method from UnityClientSender to handle button clicks
 
             //optionsButtonScript.OnButtonClicked += UnityClientSender.Instance.ReceiveButtonName;
-            optionsButtonScript.OnButtonClicked += CuiManager.Instance.HandleOptionButtonOnClick;
-            optionsButtonScript.OnButtonClicked += CuiManager.Instance.ActivateTab;
+            //optionsButtonScript.OnButtonClicked += HandleOptionButtonOnClick;
+            optionsButtonScript.OnButtonClicked += tabManager.ActivateTab;
             optionsButtonScript.OnButtonClicked += DestroyAllActiveButtons;
             StartCoroutine(DestroyButtonAfterDelay(buttonName, 100f));
 
@@ -128,21 +144,7 @@ public class OptionButtonManager : MonoBehaviour
         activeButtons.Add(buttonName, optionsButtonScript);
     }
 
-    private void CreatePrefabDictionary()
-    {
-        optionsButtonDict = new Dictionary<string, NamedButtonPrefab>();
-        foreach (NamedButtonPrefab np in optionButtonPrefabs)
-        {
-            if (!optionsButtonDict.ContainsKey(np.name))
-            {
-                optionsButtonDict.Add(np.name, np);
-            }
-            else
-            {
-                Debug.LogError($"Duplicate prefab name found in list: {np.name}");
-            }
-        }
-    }
+
     private void DestroyAllActiveButtons(string name)
     {
         foreach (var button in activeButtons.Values)
@@ -155,9 +157,28 @@ public class OptionButtonManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         DestroyAllActiveButtons("null");
-        CuiManager.Instance.ActivateTabButtons();
+        tabManager.ActivateTabButtons();
     }
+    /*
+    public void HandleOptionButtonOnClick(string buttonName)
+    {
+        switch (buttonName)
+        {
+            case "fact check":
+                UnityClientSender.Instance.ReceiveButtonName(buttonName);
+                break;
 
+            case "polarity":
+                UnityClientSender.Instance.ReceiveButtonName(buttonName);
+                break;
+
+            case "more info":
+                //make request to python server for the information
+                UnityClientSender.Instance.SendMoreInfoRequest();
+                break;
+        }
+
+    }*/
     private void OnDestroy()
     {
     }
