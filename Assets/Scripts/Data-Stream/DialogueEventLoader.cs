@@ -26,6 +26,9 @@ public class EventData
     public string EventWords;
     public string Keywords;
     public string SearchQueries;
+    public string Summary;
+    public string Candidate;
+
 }
 
 [System.Serializable]

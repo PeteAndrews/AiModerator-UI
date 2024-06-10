@@ -20,14 +20,15 @@ public class MoreInfoAction : ILinkAction
 {
     public void ExecuteAction(string linkText)
     {
-        UnityClientSender.Instance.MoreInfoEvent(linkText);
+        CuiManager.Instance.HandleAction("more info", linkText);
     }
 }
 public class ManifestoAction : ILinkAction
 {
     public void ExecuteAction(string linkText)
     {
-        UnityClientSender.Instance.SendManifestoEvent(linkText);
+        CuiManager.Instance.HandleAction("manifesto", linkText);
+
     }
 }
 
@@ -35,7 +36,7 @@ public class FollowUpAction : ILinkAction
 {
     public void ExecuteAction(string linkText)
     {
-        UnityClientSender.Instance.SendEventContinueInteraction("Continue Event", linkText);
+        CuiManager.Instance.HandleAction("continue", linkText);
     }
 }
 public class SelectInteractionOption : ILinkAction

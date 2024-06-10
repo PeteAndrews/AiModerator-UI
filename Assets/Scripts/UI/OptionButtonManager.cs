@@ -1,3 +1,6 @@
+
+/*
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -11,6 +14,7 @@ using UnityEngine;
 //upon clicking the button, the button will send the option text to the python server
 //and the python server will send back the response
 //and the response will show in the bottom UI banner panel
+
 [System.Serializable] // This makes Unity able to serialize the class
 public class NamedButtonPrefab
 {
@@ -157,7 +161,7 @@ public class OptionButtonManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         DestroyAllActiveButtons("null");
-        tabManager.ActivateTabButtons();
+        //tabManager.ActivateTabButtons();
     }
     /*
     public void HandleOptionButtonOnClick(string buttonName)
@@ -178,9 +182,6 @@ public class OptionButtonManager : MonoBehaviour
                 break;
         }
 
-    }*/
-    private void OnDestroy()
-    {
-    }
-    
+    }    
 }
+*/

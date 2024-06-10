@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f411e65591c9fc049ac9e9422366a3a3, type: 3}
+  m_Name: TabsConfig
+  m_EditorClassIdentifier: 
+  tabs:
+  - tabName: tab-factCheck-trump
+    shortName: fact check
+    candidateName: Trump
+    tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
+    positionName: first
+    tabInstance: {fileID: 0}
+  - tabName: tab-manifesto-trump
+    shortName: manifesto
+    candidateName: Trump
+    tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
+    positionName: second
+    tabInstance: {fileID: 0}
+  - tabName: tab-moreInfo-trump
+    shortName: more info
+    candidateName: Trump
+    tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
+    positionName: third
+    tabInstance: {fileID: 0}
+  - tabName: tab-polarity-trump
+    shortName: polarity
+    candidateName: Trump
+    tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
+    positionName: fourth
+    tabInstance: {fileID: 0}
+  - tabName: tab-factCheck-biden
+    shortName: fact check
+    candidateName: Biden
+    tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
+    positionName: first
+    tabInstance: {fileID: 0}
+  - tabName: tab-manifesto-biden
+    shortName: manifesto
+    candidateName: Biden
+    tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
+    positionName: second
+    tabInstance: {fileID: 0}
+  - tabName: tab-moreInfo-biden
+    shortName: more info
+    candidateName: Biden
+    tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
+    positionName: third
+    tabInstance: {fileID: 0}
+  - tabName: tab-polarity-biden
+    shortName: polarity
+    candidateName: Biden
+    tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
+    positionName: fourth
+    tabInstance: {fileID: 0}

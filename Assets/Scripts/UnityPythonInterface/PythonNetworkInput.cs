@@ -37,8 +37,8 @@ public class RetrievePushData
     private volatile bool streaming;
 
 
-    public delegate void OptionsEventHandler(string eventName, string[] text);
-    public event OptionsEventHandler OnOptionsEvent;
+//    public delegate void OptionsEventHandler(string eventName, string[] text);
+//    public event OptionsEventHandler OnOptionsEvent;
     public delegate void GptEventHandler(string eventName, string text, string functionName, string articleName, bool isHyperText);
     public event GptEventHandler OnGptEvent;
     public delegate void MoreInfoResponseHandler(string eventName, string data);
@@ -97,14 +97,14 @@ public class RetrievePushData
     private void HandleInputEvent(PythonServerDataContainer data)
     {
 
-        if (data.eventName == "Options Event")
-        {
-            // Dispatch the event invocation to the main thread
-            string[] eventDataSplit = splitText(data.eventData);
-            MainThreadDispatcher.Enqueue(() => OnOptionsEvent?.Invoke(data.eventName, eventDataSplit));
+       // if (data.eventName == "Options Event")
+       // {
+       //     // Dispatch the event invocation to the main thread
+       //     string[] eventDataSplit = splitText(data.eventData);
+       //     MainThreadDispatcher.Enqueue(() => OnOptionsEvent?.Invoke(data.eventName, eventDataSplit));
 
-        }
-        else if(data.eventName == "More Info Response Event"){
+       // }
+        if(data.eventName == "More Info Response Event"){
             MainThreadDispatcher.Enqueue(() => OnMoreInfoResponseEvent?.Invoke(data.eventName, data.eventData));
         }
         else if(data.eventName == "Set Response Event")

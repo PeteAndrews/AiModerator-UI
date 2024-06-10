@@ -1,3 +1,4 @@
+/*
 using UnityEngine.UI;
 using UnityEngine;
 using System;
@@ -342,7 +343,7 @@ public class CuiManager1 : MonoBehaviour
                 SelectInteractionOption(functionName);
                 break;
 
-        }*/
+        
     }
     public void HandleOptionButtonOnClick(string buttonName)
     {
@@ -375,7 +376,7 @@ public class CuiManager1 : MonoBehaviour
 
         activeChat.AddInteractionOptionMessage(DateTime.Now.ToString("HH:mm:ss"), null);
     }
-    /*
+    
     private void OnPolarityEvent(string funcName)
     {
         activeChat.AddInteractionOptionMessage(DateTime.Now.ToString("HH:mm:ss"), null);
@@ -387,5 +388,6 @@ public class CuiManager1 : MonoBehaviour
     {
         activeChat.AddInteractionOptionMessage(DateTime.Now.ToString("HH:mm:ss"), null);
 
-    }*/
+    }
 }
+*/

@@ -12,8 +12,7 @@ public class PolarityTabStrategy : MonoBehaviour, ITabStrategy
 
     public void Deactivate()
     {
-        //Destroy(this.gameObject);
-        this.gameObject.SetActive(false);
+        throw new System.NotImplementedException();
     }
 
 }

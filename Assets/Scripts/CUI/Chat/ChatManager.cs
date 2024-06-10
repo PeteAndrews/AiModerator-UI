@@ -24,7 +24,6 @@ public class HyperLinkConverter
                 return ConvertByCommas(input, ref functionName);
         }
     }
-
     private string ConvertByCommas(string input, ref string linkId)
     {
         StringBuilder stringBuilder = new StringBuilder();
@@ -77,73 +76,41 @@ public class ChatManager : MonoBehaviour
     {
         this.tabManager = tabManager;
     }
-    /*
-    public static string ConvertToHyperlinks(string input, bool splitAtCommas)
-    {
-        StringBuilder stringBuilder = new StringBuilder();
-        int linkId = 0;  // This will keep track of the link ID incrementally
-
-        // Define the pattern for splitting at numbered points or commas based on the splitAtCommas flag
-        string pattern = splitAtCommas ? "," : @"(?<=\n)(?=\d+\.)|(?<=\.)\s*(?=\d+\.)";
-
-        // Split the input based on the specified boolean parameter using Regex for numbers
-        string[] elements = Regex.Split(input, pattern);
-
-        foreach (string element in elements)
-        {
-            string trimmedElement = element.Trim();  // Trim to remove any leading/trailing whitespaces
-
-            if (string.IsNullOrEmpty(trimmedElement))
-                continue;  // Skip empty strings that might result from multiple delimiters
-
-            // Append each element as a hyperlink
-            stringBuilder.Append($"<link=\"ID{linkId}\">{trimmedElement}</link>");
-
-            if (splitAtCommas && trimmedElement.EndsWith(","))
-                stringBuilder.Append(" and ");  // This adds 'and' between links, adjust as needed for grammar.
-            else if (!splitAtCommas)
-                stringBuilder.AppendLine();  // Add a newline if the element is from a split at a number
-
-            linkId++;  // Increment link ID for each element
-        }
-
-        stringBuilder.Append(" for more info."); // Appends this text after all links
-        return stringBuilder.ToString();
-    }*/
-    /*
-    public void MoreInfoToHyperLinks(string text)
-    {
-        //update chat with hyperlinks - try to generalise as this will be used for follow up requests
-        text = ConvertToHyperlinks(text, true);
-        tabManager.activeChat.AddHyperLinkMessage(DateTime.Now.ToString("HH:mm:ss"), text, "more info");
-    }*/
     public void AddInteractiveHyperLinkMessage(string text, string functionName)
     {
-        text = hyperLinkConverter.Convert(text, functionName);
-        tabManager.activeChat.AddHyperLinkMessage(TimeHelper.CurrentTime, text, functionName);
-    }
-    /*
-    public void UpdateChat(string eventName, string text, string functionName, string articleName, bool isHyperText)
-    {
-        // Handle the event
-
-        if (eventName == tabManager.activeChat.name)
+        CuiMessage message = tabManager.activeTab.tabInstance.GetComponent<CuiMessage>();
+        if (message == null || message.timeText == null || message.mainText == null)
         {
-            UpdateActiveChat(DateTime.Now.ToString("HH:mm:ss"), text, functionName, false, isHyperText);
+            Debug.LogError("MessageUI component or Text components not found in the instantiated prefab.");
+            return; 
+        }
+        message.timeText.text = TimeHelper.CurrentTime;
+        message.mainText.richText = true;
+
+        message.mainText.text += string.IsNullOrEmpty(message.mainText.text) ? text : "\n" + text;
+
+        if (message.hyperlinkHandler != null)
+        {
+            message.hyperlinkHandler.enabled = message.mainText.text.Contains("<link=");
+        }
+    }
+    public void AddNonInteractiveMessage(string mainText)
+    {
+        CuiMessage messageUI = tabManager.activeTab.tabInstance.GetComponent<CuiMessage>();
+
+        if (messageUI != null && messageUI.timeText != null && messageUI.mainText != null)
+        {
+            messageUI.timeText.text = TimeHelper.CurrentTime;
+            messageUI.mainText.text = mainText;
         }
         else
         {
-            UpdateActiveChat(DateTime.Now.ToString("HH:mm:ss"), text, functionName, true, isHyperText);
-
+            Debug.LogError("MessageUI component or Text components not found in the instantiated prefab.");
         }
-        if (validOptions.Contains(functionName))
-        {
-            SelectInteractionOptionMessage(functionName);
-        }
-    }*/
+    }
     public void UpdateActiveChat(string text, string functionName, bool scrollBottom, bool isHyperText)
     {
-        if (tabManager?.activeChat == null)
+        if (tabManager?.activeTab == null)
         {
             Debug.LogError("Active chat is not set.");
             return;
@@ -151,32 +118,17 @@ public class ChatManager : MonoBehaviour
 
         if (isHyperText)
         {
+            text = hyperLinkConverter.Convert(text, functionName);
             AddInteractiveHyperLinkMessage(text, functionName);
         }
         else
         {
-            tabManager.activeChat.AddNonInteractiveMessage(TimeHelper.CurrentTime, text, scrollBottom);
-        }
-
-        if (validOptions.Contains(functionName))
-        {
-            AddSelectInteractionOptionMessage(functionName);
-        }
+            AddNonInteractiveMessage(text);
+        } 
     }
-    private void AddSelectInteractionOptionMessage(string funcName)
+    public void AddManifestoSelectMessage()
     {
-
-        tabManager.activeChat.AddInteractionOptionMessage(TimeHelper.CurrentTime, null);
-    }
-    public void ManifestoActivationMessage()
-    {
-        if(tabManager.activeChat != null)
-        {
-            tabManager.activeChat.AddManifestoActivationMessage(TimeHelper.CurrentTime);
-        }
-        else
-        {
-            Debug.LogError("No Active Chat found in ChatManager::ManifestoActivationMessage");
-        }
+        string text = "Would you like to consult the <link=\"manifesto\"><color=blue>Republican</color></link> manifesto or <link=\"manifesto\"><color=blue>Democratic</color></link> manifesto?";
+        AddInteractiveHyperLinkMessage(text, "manifesto");
     }
 }
