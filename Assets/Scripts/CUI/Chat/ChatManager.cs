@@ -5,6 +5,7 @@ using System.Text;
 using UnityEngine;
 using System;
 using System.Drawing.Printing;
+using System.ServiceModel.Channels;
 
 public static class TimeHelper
 {
@@ -18,10 +19,10 @@ public class HyperLinkConverter
         {
             case "more info":
                 return ConvertByCommas(input, ref functionName);
-            case "fact check":
+            case "follow up":
                 return ConvertByNumbers(input, ref functionName);
             default:
-                return ConvertByCommas(input, ref functionName);
+                return ConvertByNumbers(input, ref functionName);
         }
     }
     private string ConvertByCommas(string input, ref string linkId)
@@ -69,21 +70,33 @@ public class HyperLinkConverter
 }
 public class ChatManager : MonoBehaviour
 {
-    private TabManager tabManager;
     private List<string> validOptions = new List<string> { "fact check", "polarity", "more info", "continue, manifesto" };
     private HyperLinkConverter hyperLinkConverter = new HyperLinkConverter();
-    public void Initialize(TabManager tabManager)
+    private void ResizeTextCollider()
     {
-        this.tabManager = tabManager;
+        AdjustColliderToText adjustCollider = TabManager.Instance.activeTab.tabInstance.GetComponent<AdjustColliderToText>();
+        StartCoroutine(adjustCollider.UpdateColliderSizeAfterFrame());
     }
-    public void AddInteractiveHyperLinkMessage(string text, string functionName)
+
+    public void AddInteractiveMessage(string text, string functionName)
     {
-        CuiMessage message = tabManager.activeTab.tabInstance.GetComponent<CuiMessage>();
+        if (functionName != null)
+        { 
+            text = hyperLinkConverter.Convert(text, functionName);
+        }
+        AddInteractiveHyperLinkMessage(text);
+    }
+
+    public void AddInteractiveHyperLinkMessage(string text)
+    {
+
+        CuiMessage message = TabManager.Instance.activeTab.tabInstance.GetComponent<CuiMessage>();
         if (message == null || message.timeText == null || message.mainText == null)
         {
             Debug.LogError("MessageUI component or Text components not found in the instantiated prefab.");
             return; 
         }
+
         message.timeText.text = TimeHelper.CurrentTime;
         message.mainText.richText = true;
 
@@ -93,10 +106,11 @@ public class ChatManager : MonoBehaviour
         {
             message.hyperlinkHandler.enabled = message.mainText.text.Contains("<link=");
         }
+        ResizeTextCollider();
     }
     public void AddNonInteractiveMessage(string mainText)
     {
-        CuiMessage messageUI = tabManager.activeTab.tabInstance.GetComponent<CuiMessage>();
+        CuiMessage messageUI = TabManager.Instance.activeTab.tabInstance.GetComponent<CuiMessage>();
 
         if (messageUI != null && messageUI.timeText != null && messageUI.mainText != null)
         {
@@ -107,28 +121,11 @@ public class ChatManager : MonoBehaviour
         {
             Debug.LogError("MessageUI component or Text components not found in the instantiated prefab.");
         }
-    }
-    public void UpdateActiveChat(string text, string functionName, bool scrollBottom, bool isHyperText)
-    {
-        if (tabManager?.activeTab == null)
-        {
-            Debug.LogError("Active chat is not set.");
-            return;
-        }
-
-        if (isHyperText)
-        {
-            text = hyperLinkConverter.Convert(text, functionName);
-            AddInteractiveHyperLinkMessage(text, functionName);
-        }
-        else
-        {
-            AddNonInteractiveMessage(text);
-        } 
+        ResizeTextCollider();
     }
     public void AddManifestoSelectMessage()
     {
         string text = "Would you like to consult the <link=\"manifesto\"><color=blue>Republican</color></link> manifesto or <link=\"manifesto\"><color=blue>Democratic</color></link> manifesto?";
-        AddInteractiveHyperLinkMessage(text, "manifesto");
+        AddInteractiveHyperLinkMessage(text);
     }
 }

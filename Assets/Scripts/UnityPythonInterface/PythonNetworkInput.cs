@@ -94,16 +94,10 @@ public class RetrievePushData
         Debug.Log("ThreadFunction ended");
     }
 
+
     private void HandleInputEvent(PythonServerDataContainer data)
     {
 
-       // if (data.eventName == "Options Event")
-       // {
-       //     // Dispatch the event invocation to the main thread
-       //     string[] eventDataSplit = splitText(data.eventData);
-       //     MainThreadDispatcher.Enqueue(() => OnOptionsEvent?.Invoke(data.eventName, eventDataSplit));
-
-       // }
         if(data.eventName == "More Info Response Event"){
             MainThreadDispatcher.Enqueue(() => OnMoreInfoResponseEvent?.Invoke(data.eventName, data.eventData));
         }
@@ -113,10 +107,7 @@ public class RetrievePushData
         }
         else
         {
-            // Dispatch any Unity API calls to the main thread as well
-            //MainThreadDispatcher.Enqueue(() => Debug.Log($"Received event: {eventName}, with data: {eventData}"));
             MainThreadDispatcher.Enqueue(() => OnGptEvent?.Invoke(data.eventName, data.eventData, data.functionName, data.articleNames, data.isHyperText));
-
         }
     }
     private string[] splitText(string text)

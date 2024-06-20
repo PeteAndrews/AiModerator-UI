@@ -1,9 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Web;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 using UnityEngine.WSA;
 
 [System.Serializable]
@@ -12,16 +16,110 @@ public class TabPosition
     public string position;
     public Transform transform;
 }
-public interface ITabManager
+public interface ITabFactory
 {
-    void Initialize();
-    void ToggleTab(GameObject tab);
-    void ActivateTab(string tabName);
+    GameObject CreateTab(GameObject tabPrefab, Transform position);
 }
+
+public class FactCheckTabFactory : ITabFactory
+{
+    public GameObject CreateTab(GameObject tabPrefab, Transform position)
+    {
+        GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
+        Tab tab = tabInstance.AddComponent<FactCheckTab>();
+        return tabInstance;
+        //return new PolarityTab { tabPosition = position };
+    }
+}
+public class PolarityTabFactory : ITabFactory
+{
+    public GameObject CreateTab(GameObject tabPrefab, Transform position)
+    {
+        GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
+        Tab tab = tabInstance.AddComponent<PolarityTab>();
+        return tabInstance;
+        //return new PolarityTab { tabPosition = position };
+    }
+}
+public class MoreInfoTabFactory : ITabFactory
+{
+    public GameObject CreateTab(GameObject tabPrefab, Transform position)
+    {
+        GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
+        Tab tab = tabInstance.AddComponent<MoreInfoTab>();
+        return tabInstance;
+        //return new PolarityTab { tabPosition = position };
+    }
+}
+public class ManifestoTabFactory : ITabFactory
+{
+    public GameObject CreateTab(GameObject tabPrefab, Transform position)
+    {
+        GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
+        Tab tab = tabInstance.AddComponent<ManifestoTab>();
+        return tabInstance;
+        //return new PolarityTab { tabPosition = position };
+    }
+}
+public class OpinionTabFactory : ITabFactory
+{
+    public GameObject CreateTab(GameObject tabPrefab, Transform position)
+    {
+        GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
+        Tab tab = tabInstance.AddComponent<OpinionTab>();
+        return tabInstance;
+        //return new PolarityTab { tabPosition = position };
+    }
+}
+public class FollowUpFactory : ITabFactory
+{
+    public GameObject CreateTab(GameObject tabPrefab, Transform position)
+    {
+        GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
+        Tab tab = tabInstance.AddComponent<FollowUpTab>();
+        return tabInstance;
+        //return new PolarityTab { tabPosition = position };
+    }
+}
+public class ContinueTabFactory : ITabFactory
+{
+    public GameObject CreateTab(GameObject tabPrefab, Transform position)
+    {
+        GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
+        Tab tab = tabInstance.AddComponent<ContinueTab>();
+        return tabInstance;
+        //return new PolarityTab { tabPosition = position };
+    }
+}
+
 public class TabManager: MonoBehaviour//, ITabManager
 {
+    public static TabManager Instance { get; private set; }
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        tabFactories = new Dictionary<string, ITabFactory>()
+        {
+            { "fact check", new FactCheckTabFactory() },
+            { "polarity", new PolarityTabFactory() },
+            { "manifesto", new ManifestoTabFactory() },
+            { "more info", new MoreInfoTabFactory() },
+            { "opinion", new OpinionTabFactory() },
+            { "follow up", new FollowUpFactory() },
+            { "continue", new ContinueTabFactory()}
+        };
+    }
+    private Dictionary<string, ITabFactory> tabFactories;
     public TabsConfig tabsConfig;
-    public Tabs activeTab;
+    public Tab activeTab;
     public List<TabPosition> tabPositionsTrump;
     public List<TabPosition> tabPositionsBiden;
     private Dictionary<string, List<TabPosition>> tabPositions;
@@ -32,11 +130,23 @@ public class TabManager: MonoBehaviour//, ITabManager
         {"polarity Trump", "tab-polarity-trump" },
         {"more info Trump", "tab-moreInfo-trump" },
         {"manifesto Trump", "tab-manifesto-trump" },
+        {"opinion Trump", "tab-opinion-trump" },
+        {"follow up Trump", "tab-followup-trump" },
+        {"continue Trump", "tab-continue-trump" },
+        {"depth Trump", "tab-depth-trump" },
         {"fact check Biden", "tab-factCheck-biden" },
         {"polarity Biden", "tab-polarity-biden" },
         {"more info Biden", "tab-moreInfo-biden" },
-        {"manifesto Biden", "tab-manifesto-biden" }
+        {"manifesto Biden", "tab-manifesto-biden" },
+        {"opinion Biden", "tab-opinion-biden" },
+        {"follow up Biden", "tab-followup-biden" },
+        {"continue Biden", "tab-continue-biden" },
+        {"depth Biden", "tab-depth-biden" },
     };
+    public Transform bidenTabAnchorPosition;
+    public Transform trumpTabAnchorPosition;
+    private Dictionary<string, Transform> instTabPositions;
+
     private void Start()
     {
         tabPositions = new Dictionary<string, List<TabPosition>>()
@@ -44,45 +154,79 @@ public class TabManager: MonoBehaviour//, ITabManager
             { "Trump", tabPositionsTrump },
             { "Biden", tabPositionsBiden }
         };
+        instTabPositions = new Dictionary<string, Transform>()
+        {
+            {"Trump", trumpTabAnchorPosition },
+            {"Biden", bidenTabAnchorPosition }
+        };
+    }
+    private Transform FindTabPosition(string candidateName, string positionName)
+    {
+        return tabPositions[candidateName]?.FirstOrDefault(p => p.position == positionName)?.transform;
     }
     public bool CheckTabExists(string functionName)
     {
         return activeTab != null ? activeTab.shortName == functionName : false;
     }
-    public void Activate(string tabName, string candidateName, bool isActive)
+    private void InitializeTab(GameObject tabInstance, Transform position, string candidateName, bool isActive)
     {
-        string fullName = tabName + " " + candidateName;
-        tabName = mapTabs[fullName];
-        var tab = System.Array.Find(tabsConfig.tabs, pair => pair.tabName == tabName);
 
-        if (tab != null && tabPositions.Count > 0)
-        {
-            TabPosition tabPosition = tabPositions[candidateName].FirstOrDefault(p => p.position == tab.positionName);
-            Transform position = tabPosition?.transform;
-            if (position != null)
-            {
-                tab.Initialize(position, isActive);
-                activeTab = tab;
-                tab.tabStrategy.Activate();
-            }
-        }
+        Tab tab = tabInstance.GetComponent<Tab>();
+        tab.tabPosition = position;
+        tab.candidateName = candidateName;
+        tab.shortName = tab.name;
+        tab.tabInstance = tabInstance;
+        activeTab = tab;
     }
-    public void SwitchTab(string tabName, string candidateName, bool isActive)
+    public void ActivateTab(string tabType, string candidateName)
     {
-        if (activeTab.tabStrategy != null)
+        string fullName = tabType + " " + candidateName;
+        string tabName = mapTabs.GetValueOrDefault(fullName);
+        var tabDetails = System.Array.Find(tabsConfig.tabs, t => t.tabName == tabName);
+        if (tabFactories.TryGetValue(tabType, out var factory))
         {
-            DestroyActiveTab();
+            //Transform position = FindTabPosition(candidateName, tabDetails.positionName);
+            Transform position = instTabPositions[candidateName];
+            GameObject tabInstance = factory.CreateTab(tabDetails.tabPrefab, position);
+            InitializeTab(tabInstance, position, candidateName, isActive: true);
         }
-        Activate(tabName, candidateName, isActive);
     }
-    public void DestroyActiveTab()
+    public void SwitchTab(string eventName, string candidateName)
     {
         if (activeTab != null)
         {
-            CuiManager.Instance.HandleDestroyActiveTab(activeTab.shortName, activeTab.candidateName);
-            activeTab.tabStrategy.Deactivate();
-            Destroy(activeTab.tabInstance);
-            activeTab.tabStrategy = null;
+            DestroyActiveTab();
         }
+        ActivateTab(eventName, candidateName);
     }
+    public void HandleOpinionTab()
+    {
+        //retrieve name of candidate and previous tab
+        activeTab.UserHasInteracted = true;
+        string candidateName = activeTab.candidateName;
+        string previousTabName = activeTab.shortName;
+        SwitchTab("opinion", candidateName);
+    }
+    public void HandleReactTab()
+    {
+       throw new NotImplementedException();
+    }
+    public void HandleFollowUpTab()
+    {
+        //retrieve name of candidate and previous tab
+        activeTab.UserHasInteracted=true;
+        string candidate = activeTab.candidateName;
+        string previousTabName = activeTab.shortName;
+        //activeTab.TransitionToNextState();
+        ActivateTab("follow up", candidate);
+    }
+    public void HandleDepthTab(float factor)
+    {
+
+    }
+    public void DestroyActiveTab()
+    {
+        Destroy(activeTab.gameObject);
+    }
+
 }

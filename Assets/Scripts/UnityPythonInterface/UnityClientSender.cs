@@ -5,180 +5,107 @@ using Newtonsoft.Json;
 using NetMQ;
 using NetMQ.Sockets;
 
+public class RequestEventData
+{
+    public string EventName { get; set; }
+    public string Option { get; set; }  
+    public string Mode { get; set; }
+    public string Party { get; set; }
+    public string Choice { get; set; }
+    public string ToJson()
+    {
+        return JsonConvert.SerializeObject(this);
+    }
+}
 public class UnityClientSender : MonoBehaviour
 {
-    public static UnityClientSender Instance { get; private set; }
+    private static UnityClientSender _instance;
+    public static UnityClientSender Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                var go = new GameObject("UnityClientSender");
+                _instance = go.AddComponent<UnityClientSender>();
+                DontDestroyOnLoad(go);
+            }
+            return _instance;
+        }
+    }
+
     private bool isWaitingForResponse = false;
     public string mode;
 
-
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
         }
     }
-    // Start is called before the first frame update
+
     void Start()
     {
-        if (DialogueEventLoader.Instance != null)
-        {
-            DialogueEventLoader.Instance.OnSendEventData += HandleSendEventData;
-        }
-        if(RetrievePushData.Instance != null)
-        {
-            RetrievePushData.Instance.OnSetEvent += OnSetResponseReceived;
-        }
-
-    }
-    public void SendMoreInfoRequest()
-    {
-        StartCoroutine(HandleInfoButtonClick("more info"));
-
+        SubscribeEvents();
+        Debug.Log("Unity client Start Set Mode: " + mode);
     }
 
-    public void ReceiveButtonName(string buttonName)
+    private void SubscribeEvents()
     {
-        StartCoroutine(HandleButtonClick(buttonName));
-
+        DialogueEventLoader.Instance.OnSendEventData += HandleEvent;
+        RetrievePushData.Instance.OnSetEvent += OnSetResponseReceived;
     }
-    private IEnumerator HandleInfoButtonClick(string buttonName)
-    {
-        yield return SendEventAndWaitForResponse("Set Event", buttonName);
-        Debug.Log("Send More Info Request");
-        var data = new
-        {
-            EventName = "More Info Request Event"
-        };
-        string jsonData = JsonConvert.SerializeObject(data);
-        SendEvent(jsonData);
 
+    public void SendEventRequest(RequestEventData requestEventData)
+    {
+        requestEventData.Mode = mode;
+        StartCoroutine(HandleEventRequest(requestEventData));
     }
-    private IEnumerator HandleButtonClick(string buttonName)
+
+    private IEnumerator HandleEventRequest(RequestEventData requestEventData)
     {
-        // Send the set event
-        yield return SendEventAndWaitForResponse("Set Event", buttonName);
-        Debug.Log("Received response for set event, proceeding with select event.");
-
-        var data = new
-        {
-            EventName = "Select Event",
-            Option = buttonName,
-        };
-        string jsonData = JsonConvert.SerializeObject(data);
-        // Once the response is received, send the select event
-        SendEvent(jsonData);
-
+        yield return SendEventAndWaitForResponse("Set Event", requestEventData.Option);
+        SendEvent(requestEventData.ToJson());
     }
 
     private IEnumerator SendEventAndWaitForResponse(string eventName, string option)
     {
-        Debug.Log($"Sending {eventName} and waiting for response...");
-
-        var data = new
-        {
-            EventName = eventName,
-            Option = option
-        };
-        string jsonData = JsonConvert.SerializeObject(data);
-        SendEvent(jsonData);
-
+        RequestEventData data = new RequestEventData { EventName = eventName, Option = option };
+        SendEvent(data.ToJson());
         isWaitingForResponse = true;
-
-        // Wait until the response is received
         while (isWaitingForResponse)
-        {
-            yield return null; // Wait for one frame
-        }
-
-        Debug.Log($"Response received for {eventName}, continuing...");
+            yield return null;
     }
 
     public void OnSetResponseReceived()
     {
-        Debug.Log("Set response received, allowing continuation.");
         isWaitingForResponse = false;
     }
-    public void MoreInfoEvent(string moreInfoData)
-    {
-        var data = new
-        {
-            EventName = "More Info Event",
-            Option = "more info",
-            Keyword = moreInfoData
-        };
-        string jsonData = JsonConvert.SerializeObject(data);
-        SendEvent(jsonData);
-    }
 
-    public void SendEventNoResponse(string eventName, string option)
+    private void SendEvent(string jsonData)
     {
-        var data = new
-        {
-            EventName = eventName,
-            Option = option
-        };
-        string jsonData = JsonConvert.SerializeObject(data);
-        SendEvent(jsonData);
-    }
-    public void SendEventContinueInteraction(string eventName, string userInput)
-    {
-        var data = new
-        {
-            EventName = eventName,
-            UserInput = userInput,
-            Mode = mode
-        };
-        string jsonData = JsonConvert.SerializeObject(data);
-        SendEvent(jsonData);
-    }
-    public void SendManifestoEvent(string party)
-    {
-        var data = new
-        {
-            EventName = "Manifesto Event",
-            UserInput = party,
-            Mode = mode
-        };
-        string jsonData = JsonConvert.SerializeObject(data);
-        SendEvent(jsonData);
-    }
-    private void SendEvent(string data)
-    {
-        //need to send over event name
         using (var requestSocket = new RequestSocket(">tcp://localhost:5556"))
         {
-            requestSocket.SendFrame(data);
-            Debug.Log("Message sent: " + data);
+            requestSocket.SendFrame(jsonData);
+            Debug.Log("Message sent: " + jsonData);
             string message = requestSocket.ReceiveFrameString();
             Debug.Log("Message received: " + message);
-
         }
     }
-    private void HandleSendEventData(EventData eventData)//HandleSendSystemEventData
+
+    private void HandleEvent(EventData eventData)
     {
-        //Serialise the eventData object to JSON
-        string jsonData = JsonConvert.SerializeObject(eventData);
         AsyncIO.ForceDotNet.Force();
-        SendEvent(jsonData);
-
+        SendEvent(JsonConvert.SerializeObject(eventData));
     }
-
-
 
     void OnDestroy()
     {
         if (DialogueEventLoader.Instance != null)
         {
-            DialogueEventLoader.Instance.OnSendEventData -= HandleSendEventData;
+            DialogueEventLoader.Instance.OnSendEventData -= HandleEvent;
         }
         NetMQConfig.Cleanup();
-
     }
 }

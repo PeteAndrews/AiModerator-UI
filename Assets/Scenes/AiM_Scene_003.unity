@@ -600,11 +600,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1525887773}
   - {fileID: 1812456720}
   - {fileID: 292237761}
   - {fileID: 1149014227}
-  - {fileID: 1127471080}
   m_Father: {fileID: 1485889224}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -624,9 +622,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bee6010e7e9354f43935216cc0a975e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  userController: {fileID: 1888338860}
   tabManager: {fileID: 1812456721}
   chatManager: {fileID: 292237762}
   functionButtonManager: {fileID: 1149014228}
+  mode: security
 --- !u!1 &385001623
 GameObject:
   m_ObjectHideFlags: 0
@@ -1309,41 +1309,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &1127471079
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1127471080}
-  m_Layer: 5
-  m_Name: TabChatManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1127471080
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1127471079}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 298336521}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1149014226
 GameObject:
   m_ObjectHideFlags: 0
@@ -1540,68 +1505,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 897460251}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1525887772
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1525887773}
-  - component: {fileID: 1525887774}
-  m_Layer: 5
-  m_Name: OptionButtonManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1525887773
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1525887772}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 298336521}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1525887774
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1525887772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5967ed897ecab444a8edf5f0496349c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonEventPersons: 0000000001000000
-  optionButtonPrefabs:
-  - name: fact check
-    prefab: {fileID: 6512742017680719175, guid: e5b4972b2587bfc48acd50ddb656e090, type: 3}
-    position: {x: 220, y: 30}
-  - name: polarity
-    prefab: {fileID: 903338041368052138, guid: d0ed04ffc4035864a9498fc11724a25f, type: 3}
-    position: {x: 200, y: 10}
-  - name: more info
-    prefab: {fileID: 6415385778612623578, guid: 016e19b9224a11141a7164673f20040d, type: 3}
-    position: {x: 350, y: 50}
-  - name: manifesto
-    prefab: {fileID: 7459319323894308165, guid: 88a13f6cc83d58149a488028f61bf9e2, type: 3}
-    position: {x: -200, y: 50}
 --- !u!1 &1563483294
 GameObject:
   m_ObjectHideFlags: 0
@@ -1705,6 +1608,8 @@ MonoBehaviour:
     transform: {fileID: 7642522565815472319}
   - position: fourth
     transform: {fileID: 7642522565815472318}
+  bidenTabAnchorPosition: {fileID: 7642522565815472318}
+  trumpTabAnchorPosition: {fileID: 468684683}
 --- !u!1 &1864361516
 GameObject:
   m_ObjectHideFlags: 0
@@ -1745,6 +1650,51 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 935.54224, y: 570.3376, z: 2.055806}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1888338859
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1888338861}
+  - component: {fileID: 1888338860}
+  m_Layer: 0
+  m_Name: UserController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1888338860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1888338859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 008ec7959b0efd3459132e2139079efb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minimumSwipeDistance: 50
+--- !u!4 &1888338861
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1888338859}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1980,6 +1930,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1992951025958131171, guid: f33cf71a3168aa34d82702fe92fb352f, type: 3}
+      propertyPath: m_TagString
+      value: FunctionButton
+      objectReference: {fileID: 0}
     - target: {fileID: 2172182556127438203, guid: f33cf71a3168aa34d82702fe92fb352f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1995,6 +1949,10 @@ PrefabInstance:
     - target: {fileID: 2172182556127438203, guid: f33cf71a3168aa34d82702fe92fb352f, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2241096339239435012, guid: f33cf71a3168aa34d82702fe92fb352f, type: 3}
+      propertyPath: m_TagString
+      value: FunctionButton
       objectReference: {fileID: 0}
     - target: {fileID: 2521234352642608865, guid: f33cf71a3168aa34d82702fe92fb352f, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2032,9 +1990,17 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5884572378218996904, guid: f33cf71a3168aa34d82702fe92fb352f, type: 3}
+      propertyPath: m_TagString
+      value: FunctionButton
+      objectReference: {fileID: 0}
     - target: {fileID: 6413134925872463943, guid: f33cf71a3168aa34d82702fe92fb352f, type: 3}
       propertyPath: activeColour.a
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7609214887246293070, guid: f33cf71a3168aa34d82702fe92fb352f, type: 3}
+      propertyPath: m_TagString
+      value: FunctionButton
       objectReference: {fileID: 0}
     - target: {fileID: 7673099498462103454, guid: f33cf71a3168aa34d82702fe92fb352f, type: 3}
       propertyPath: m_Pivot.x
@@ -2344,3 +2310,4 @@ SceneRoots:
   - {fileID: 1485889224}
   - {fileID: 897460251}
   - {fileID: 759397370}
+  - {fileID: 1888338861}

@@ -18,46 +18,110 @@ MonoBehaviour:
     candidateName: Trump
     tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
     positionName: first
+    tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-manifesto-trump
     shortName: manifesto
     candidateName: Trump
     tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
     positionName: second
+    tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-moreInfo-trump
     shortName: more info
     candidateName: Trump
     tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
     positionName: third
+    tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-polarity-trump
     shortName: polarity
     candidateName: Trump
     tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
     positionName: fourth
+    tabPosition: {fileID: 0}
+    tabInstance: {fileID: 0}
+  - tabName: tab-opinion-trump
+    shortName: opinion
+    candidateName: Trump
+    tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
+    positionName: 
+    tabPosition: {fileID: 0}
+    tabInstance: {fileID: 0}
+  - tabName: tab-followup-trump
+    shortName: followup
+    candidateName: Trump
+    tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
+    positionName: 
+    tabPosition: {fileID: 0}
+    tabInstance: {fileID: 0}
+  - tabName: tab-continue-trump
+    shortName: continue
+    candidateName: Trump
+    tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
+    positionName: 
+    tabPosition: {fileID: 0}
+    tabInstance: {fileID: 0}
+  - tabName: tab-depth-trump
+    shortName: depth
+    candidateName: Trump
+    tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
+    positionName: 
+    tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-factCheck-biden
     shortName: fact check
     candidateName: Biden
     tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
     positionName: first
+    tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-manifesto-biden
     shortName: manifesto
     candidateName: Biden
     tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
     positionName: second
+    tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-moreInfo-biden
     shortName: more info
     candidateName: Biden
     tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
     positionName: third
+    tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-polarity-biden
     shortName: polarity
     candidateName: Biden
     tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
     positionName: fourth
+    tabPosition: {fileID: 0}
+    tabInstance: {fileID: 0}
+  - tabName: tab-opinion-biden
+    shortName: opinion
+    candidateName: Biden
+    tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
+    positionName: 
+    tabPosition: {fileID: 0}
+    tabInstance: {fileID: 0}
+  - tabName: tab-followup-biden
+    shortName: followup
+    candidateName: Biden
+    tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
+    positionName: 
+    tabPosition: {fileID: 0}
+    tabInstance: {fileID: 0}
+  - tabName: tab-continue-biden
+    shortName: continue
+    candidateName: Biden
+    tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
+    positionName: 
+    tabPosition: {fileID: 0}
+    tabInstance: {fileID: 0}
+  - tabName: tab-depth-biden
+    shortName: depth
+    candidateName: Biden
+    tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
+    positionName: 
+    tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}

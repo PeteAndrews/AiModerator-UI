@@ -12,6 +12,7 @@ using System.Text;
 public class CuiManager : MonoBehaviour
 {
     public static CuiManager Instance { get; private set; }
+    public UserController userController;
     private void Awake()
     {
         if (Instance == null)
@@ -28,110 +29,104 @@ public class CuiManager : MonoBehaviour
     [SerializeField] TabManager tabManager;
     [SerializeField] ChatManager chatManager;
     [SerializeField] FunctionButtonManager functionButtonManager;
+    public string mode;
     private EventData currentEventData;
+    public event Action<string> OnMoreInfoSelected;
+    public event Action<string> OnOpinionSelected;
+    public event Action<string> OnManifestoSelected;
+    public event Action<string> OnFollowUpSelected;
 
     private void OnEnable()
     {
-        //RetrievePushData.Instance.OnOptionsEvent += HandlePythonOptionsInput;
-        RetrievePushData.Instance.OnGptEvent += HandlePythonGptInput;
-        RetrievePushData.Instance.OnMoreInfoResponseEvent += HandleMoreInfoKeywordResponse;
         DialogueEventLoader.Instance.OnSendEventData += HandleDialogueEvent;
-
+        UserController.Instance.OnSwipeEvent += HandleSwipeEvent;
+        UserController.Instance.OnDoubleTapEvent += HandleDoubleTapEvent;
+        UserController.Instance.OnSingleTapEvent += HandleSingleTapEvent;
+        UserController.Instance.OnPinchZoomEvent += HandlePinchZoomEvent;
     }
     private void OnDisable()
     {
-        //RetrievePushData.Instance.OnOptionsEvent -= HandlePythonOptionsInput;
-        RetrievePushData.Instance.OnGptEvent -= HandlePythonGptInput;
-        RetrievePushData.Instance.OnMoreInfoResponseEvent -= HandleMoreInfoKeywordResponse;
         DialogueEventLoader.Instance.OnSendEventData -= HandleDialogueEvent;
-
+        UserController.Instance.OnSwipeEvent -= HandleSwipeEvent;
+        UserController.Instance.OnDoubleTapEvent -= HandleDoubleTapEvent;
+        UserController.Instance.OnSingleTapEvent -= HandleSingleTapEvent;
+        UserController.Instance.OnPinchZoomEvent -= HandlePinchZoomEvent;
     }
 
     private void Start()
     {
-        //tabManager.Initialize();
-        chatManager.Initialize(tabManager);
-        //optionButtonManager.Initialize(tabManager);
+        UnityClientSender.Instance.mode = mode;
+
     }
 
     private void HandleDialogueEvent(EventData eventData)
     {
-        //store event data
         currentEventData = eventData;
-        //set active buttons                                    --NEXT
         functionButtonManager.ActivateFunctionButtons(eventData.Candidate);
-        //Add event summary to banner.
-        //throw new NotImplementedException();
+    }
+    public void RaiseUserSelectEvent(string text, string id)
+    {
+        //tabManager.DestroyActiveTab();
+        switch (id)
+        {
+            case "more info":
+                OnMoreInfoSelected?.Invoke(text);
+                break;
+            case "opinion":
+                OnOpinionSelected?.Invoke(text);
+                break;
+            case "manifesto":
+                OnManifestoSelected?.Invoke(text);
+                break;
+            case "follow up":
+                OnFollowUpSelected?.Invoke(text);
+                break;
+        }
 
     }
-    public void HandleFunctionButtonEvent(string eventName, string candidateName)
+    public void PublishToChat(string text, bool isInteractive, string functionName = null)
     {
-        Debug.Log("CuiManager Notified, Notifying TabManager");
-        if (eventName != "more info")
+        if (isInteractive)
         {
-            tabManager.SwitchTab(eventName, candidateName, true);
+            chatManager.AddInteractiveMessage(text, functionName);
         }
         else
         {
-            UnityClientSender.Instance.SendMoreInfoRequest();
+            chatManager.AddNonInteractiveMessage(text);
         }
-
-        //throw new NotImplementedException();
     }
-    private void HandlePythonGptInput(string eventName, string text, string functionName, string articleName, bool isHyperText)
+    public void PublishManifestoMessage()
     {
-        //chatManager.UpdateChat(eventName, text, functionName, articleName, isHyperText);
-        //spawna and activate tab
-        //want to check is the tab under the same name already exists
-        bool tabExists = tabManager.CheckTabExists(functionName);
-        if (!tabExists)
-        {
-            tabManager.SwitchTab(functionName, currentEventData.Candidate, true);
-        }
-        chatManager.UpdateActiveChat(text, functionName, true, isHyperText);
-    }
-    public void HandleManifestoActivation()
-    {
-        //summarize the event infomation and give the user option of consulting the manifesto
-        chatManager.AddNonInteractiveMessage(DialogueEventLoader.Instance.currentEventData.ResponseViewpoint);
         chatManager.AddManifestoSelectMessage();
     }
-
-    public void HandleAction(string actionType, string linkText)
+    private void HandleSwipeEvent(string direction)
     {
-        switch (actionType)
+        if (direction == "up")
         {
-            case "manifesto": UnityClientSender.Instance.SendManifestoEvent(linkText);break;
-            case "more info": UnityClientSender.Instance.MoreInfoEvent(linkText); break;
-            case "opinion": UnityClientSender.Instance.SendEventNoResponse("Select Event", actionType);break;
-            case "continue":  UnityClientSender.Instance.SendEventContinueInteraction("Continue Event", linkText);break;
+            TabManager.Instance.HandleReactTab();
         }
-        tabManager.DestroyActiveTab();
+        else if (direction == "down")
+        {
+            TabManager.Instance.HandleOpinionTab();
+        }
     }
-    public void HandleDestroyActiveTab(string tabName, string candidateName)
+    private void HandleDoubleTapEvent()
     {
-        functionButtonManager.DeactivateFunctionButton(tabName, candidateName);
+        TabManager.Instance.HandleFollowUpTab();
     }
-    public void HandleMoreInfoKeywordResponse(string eventName, string data)
+    private void HandleSingleTapEvent()
     {
-        //Being called constantly
-        tabManager.SwitchTab("more info", currentEventData.Candidate, true);
-        chatManager.UpdateActiveChat(data, "more info", true, true);
+        DeactivateFunctionButton();
+        TabManager.Instance.DestroyActiveTab();
     }
-    /*
-    private void HandlePythonOptionsInput(string eventName, string[] tabNames)
+    private void HandlePinchZoomEvent(float factor)
     {
-        tabManager.OnOptionsEvent(tabNames);
+        TabManager.Instance.HandleDepthTab(factor);
     }
-    private void HandleMoreInfoResponse(string eventName, string text)
+    public void DeactivateFunctionButton()
     {
-        //chatManager.MoreInfoToHyperLinks(text);
-        chatManager.AddInteractiveHyperLinkMessage(text, "more info");
+        //functionButtonManager.DeactivateFunctionButton(buttonName, candidateName);
+        functionButtonManager.DeactivateActiveFunctionButton();
     }
-    public void HandleManifestoActivation()
-    {
-        //summarize the event infomation and give the user option of consulting the manifesto
-        tabManager.activeChat.AddNonInteractiveMessage(DateTime.Now.ToString("HH:mm:ss"), DialogueEventLoader.Instance.currentEventData.ResponseViewpoint, true);
-        chatManager.ManifestoActivationMessage();
-    }*/
+
 }
