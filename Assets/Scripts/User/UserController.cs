@@ -24,6 +24,7 @@ public class UserController : MonoBehaviour
     private int tapCount = 0;
     private float lastTapTime = 0;
     private float doubleTapTime = 0.3f; // Maximum time interval between taps
+    public float pinchSensitivity = 500.0f; // Sensitivity of the pinch gesture
 
     // Variables for pinch detection
     private float initialPinchDistance;
@@ -38,6 +39,11 @@ public class UserController : MonoBehaviour
     public event SingleTapEventHandler OnSingleTapEvent;
     public delegate void PinchZoomEventHandler(float factor);
     public event PinchZoomEventHandler OnPinchZoomEvent;
+
+    private void Start()
+    {
+        SetTouchInteractionEnabled(false);
+    }
 
     void Update()
     {
@@ -75,12 +81,13 @@ public class UserController : MonoBehaviour
     }
     private void HandleSimulatedPinch(float scrollDelta)
     {
-        simulatedPinchDistance += scrollDelta * 100; // Adjust scaling to simulate pinch distance changes
+        simulatedPinchDistance += scrollDelta * 300;
+
+        simulatedPinchDistance = Mathf.Clamp(simulatedPinchDistance, 10, 100); 
+
+        float zoomFactor = (simulatedPinchDistance - 10) / (100 - 10);
+
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        if (simulatedPinchDistance < 10) simulatedPinchDistance = 10; // Prevent it from going to zero or negative
-        float zoomFactor = simulatedPinchDistance / 100; // Normalize the distance to a zoom factor
-
         HandlePinchZoom(mousePos, zoomFactor);
     }
 #endif
@@ -122,7 +129,6 @@ public class UserController : MonoBehaviour
     }
     private void HandlePinch()
     {
-        // Get two touches and calculate the pinch distance and pinch center
         Touch touch0 = Input.GetTouch(0);
         Touch touch1 = Input.GetTouch(1);
 
@@ -135,7 +141,10 @@ public class UserController : MonoBehaviour
         else if (touch0.phase == TouchPhase.Moved || touch1.phase == TouchPhase.Moved)
         {
             var currentPinchDistance = Vector2.Distance(touch0.position, touch1.position);
-            var factor = currentPinchDistance / initialPinchDistance;
+            var pinchChange = currentPinchDistance - initialPinchDistance;
+            var factor = 1 + pinchChange / (pinchSensitivity); 
+            factor = Mathf.Clamp(factor, 0f, 1f); 
+
             HandlePinchZoom(initialPinchCenter, factor);
             initialPinchDistance = currentPinchDistance;
         }
@@ -158,11 +167,10 @@ public class UserController : MonoBehaviour
         }
         lastTapTime = Time.time;
 
-        // If double tap is detected, handle it
         if (tapCount == 2)
         {
             HandleDoubleTap(position, hitInformation);
-            tapCount = 0; // Reset tap count after handling double tap
+            tapCount = 0; 
         }
     }
     private void HandleTouchMove(Vector2 position, RaycastHit2D hitInformation)
@@ -204,7 +212,6 @@ public class UserController : MonoBehaviour
     }
     private void HandleSwipeDirection(Vector2 direction)
     {
-        // Change the comparison to focus on the y-component
         if (Mathf.Abs(direction.y) > Mathf.Abs(direction.x))
         {
             if (direction.y > 0)
@@ -224,9 +231,8 @@ public class UserController : MonoBehaviour
         Debug.Log("Tap Detected at: " + position);
         if (hitInformation.collider != null)
         {
-            if (hitInformation.collider.CompareTag("Button"))
+            if (hitInformation.collider.CompareTag("FunctionButton"))
             {
-                // Invoke event or handle button tap
                 Debug.Log("Button was tapped.");
             }
             else
@@ -236,7 +242,6 @@ public class UserController : MonoBehaviour
         }
         else
         {
-            // Handle tap when no objects were hit
             OnSingleTapEvent?.Invoke();
         }
     }
@@ -250,6 +255,6 @@ public class UserController : MonoBehaviour
     }
     public void SetTouchInteractionEnabled(bool enabled)
     {
-        this.enabled = enabled; // Enable or disable this UserController component
+        this.enabled = enabled;
     }
 }

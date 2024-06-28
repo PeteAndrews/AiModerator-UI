@@ -35,12 +35,11 @@ public class FunctionButtonManager : MonoBehaviour
     }
     IEnumerator StorePositionsAfterFrame()
     {
-        yield return null; // Wait for one frame
+        yield return null; 
         StoreOriginalPositions();
     }
     private void StoreOriginalPositions()
     {
-        // Disable the layout group
         var layoutGroup = trumpFunctionButtonContainer.GetComponent<VerticalLayoutGroup>();
         if (layoutGroup != null)
         {
@@ -53,17 +52,14 @@ public class FunctionButtonManager : MonoBehaviour
             layoutGroupBiden.enabled = false;
         }
 
-        // Store positions
         foreach (var pair in buttonContainers)
         {
             foreach (var button in pair.Value)
             {
                 originalPositions[button] = button.transform.position;
-                Debug.Log("Storing position for " + button.gameObject.name + ": " + button.transform.position);
             }
         }
 
-        // Re-enable the layout group
         if (layoutGroup != null)
         {
             layoutGroup.enabled = true;
@@ -124,7 +120,6 @@ public class FunctionButtonManager : MonoBehaviour
         } 
         if (activeButtons.ContainsKey(candidate) && activeButtons[candidate] != selectedButton)
         {
-            // Swap the currently active button back to its original position
             SwapButtonToOriginalPosition(activeButtons[candidate]);
         }
 
@@ -139,7 +134,6 @@ public class FunctionButtonManager : MonoBehaviour
             foreach (var button in pair.Value)
             {
                 SwapButtonToOriginalPosition(button);
-                Debug.Log("Resetting position for " + button.gameObject.name + " to " + originalPositions[button]);
 
             }
         }
@@ -161,21 +155,20 @@ public class FunctionButtonManager : MonoBehaviour
     {
         FunctionButton bottomButton = currentBottomButtons[candidate];
 
-        if (selectedButton != bottomButton) // If not currently at the bottom
+        if (selectedButton != bottomButton) 
         {
             Vector3 tempPosition = selectedButton.transform.position;
             selectedButton.transform.position = bottomButton.transform.position;
             bottomButton.transform.position = tempPosition;
 
-            // Update the current bottom button
             currentBottomButtons[candidate] = selectedButton;
-            activeButtons[candidate] = selectedButton; // Update the active button
+            activeButtons[candidate] = selectedButton; 
         }
         else
         {
             selectedButton.transform.position = originalPositions[selectedButton];
             currentBottomButtons[candidate] = buttonContainers[candidate].Last();
-            activeButtons.Remove(candidate); // Clear the active button as it's reset
+            activeButtons.Remove(candidate); 
         }
     }
 
@@ -201,7 +194,6 @@ public class FunctionButtonManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Unregister event handlers to avoid memory leaks
         UnregisterAllButtons(trumpButtons);
         UnregisterAllButtons(bidenButtons);
     }

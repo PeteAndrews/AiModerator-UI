@@ -19,6 +19,7 @@ public class PythonServerDataContainer
     public string articleNames;
     public string functionName;
     public bool isHyperText=false;
+    public List<byte[]> imageData;
 }
 
 public class RetrievePushData
@@ -36,31 +37,26 @@ public class RetrievePushData
     private readonly Thread thread;
     private volatile bool streaming;
 
-
-//    public delegate void OptionsEventHandler(string eventName, string[] text);
-//    public event OptionsEventHandler OnOptionsEvent;
     public delegate void GptEventHandler(string eventName, string text, string functionName, string articleName, bool isHyperText);
     public event GptEventHandler OnGptEvent;
     public delegate void MoreInfoResponseHandler(string eventName, string data);
     public event MoreInfoResponseHandler OnMoreInfoResponseEvent;
     public delegate void SetEventHandler();
     public event SetEventHandler OnSetEvent;
-    //will need another event for the gpt events
+    public delegate void ImageReceivedHandler(List<Texture2D> texture);
+    public event ImageReceivedHandler OnImageReceieved; 
 
     public RetrievePushData()
     {
-        // This no longer directly takes a callback. The callback is passed when starting the thread.
         thread = new Thread(ThreadFunction);
     }
 
     private void ThreadFunction(object callbackObject)
     {
-        Debug.Log("ThreadFunction started");
-
-        Action<string, string> callback = callbackObject as Action<string, string>;
+        Action<PythonServerDataContainer> callback = callbackObject as Action<PythonServerDataContainer>;
         if (callback == null)
         {
-            throw new InvalidOperationException("Callback must be an Action<string, string>.");
+            throw new InvalidOperationException("Callback must be an Action<PythonServerDataContainer>.");
         }
 
         using (var socket = new PullSocket())
@@ -70,18 +66,28 @@ public class RetrievePushData
             {
                 while (streaming)
                 {
-                    string input = socket.ReceiveFrameString();
-                    PythonServerDataContainer data = JsonConvert.DeserializeObject<PythonServerDataContainer>(input);//make sure container can retain information from gpt event as well
-                    HandleInputEvent(data);
-                    callback(data.eventName, data.eventData);
-                    try
+                    var msg = new NetMQMessage();
+                    if (socket.TryReceiveMultipartMessage(ref msg) && msg.Count() > 0) 
                     {
-                        callback(data.eventName, data.eventData);
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.LogError("Exception in callback: " + ex.Message);
-                        continue;
+                        var input = msg[0].ConvertToString(); 
+                        PythonServerDataContainer data = JsonConvert.DeserializeObject<PythonServerDataContainer>(input);
+
+                        if (msg.Count() > 1)
+                        {
+                            List<byte[]> images = new List<byte[]>();
+                            for (int i = 1; i < msg.Count(); i++)
+                            {
+                                images.Add(msg[i].Buffer);
+                            }
+                            data.imageData = images; 
+                        }
+                        else
+                        {
+                            data.imageData = new List<byte[]>(); 
+                        }
+
+                        HandleInputEvent(data);
+                        callback(data);
                     }
                 }
             }
@@ -94,33 +100,51 @@ public class RetrievePushData
         Debug.Log("ThreadFunction ended");
     }
 
+    private List<Texture2D> HandleBytesToTexture(List<byte[]> images)
+    {
+        List<Texture2D> textures = new List<Texture2D>();
+        foreach (byte[] image in images)
+        {
+            Texture2D texture = new Texture2D(0, 0);
+            texture.LoadImage(image); 
+            textures.Add(texture);
+        }
+        System.IO.File.WriteAllBytes("test_output_image.png", images[0]);
+
+        return textures;
+    }
+
 
     private void HandleInputEvent(PythonServerDataContainer data)
     {
-
-        if(data.eventName == "More Info Response Event"){
-            MainThreadDispatcher.Enqueue(() => OnMoreInfoResponseEvent?.Invoke(data.eventName, data.eventData));
-        }
-        else if(data.eventName == "Set Response Event")
+        switch(data.eventName)
         {
-            MainThreadDispatcher.Enqueue(() => OnSetEvent?.Invoke());
-        }
-        else
-        {
-            MainThreadDispatcher.Enqueue(() => OnGptEvent?.Invoke(data.eventName, data.eventData, data.functionName, data.articleNames, data.isHyperText));
+            case "More Info Response Event":
+                MainThreadDispatcher.Enqueue(() => OnMoreInfoResponseEvent?.Invoke(data.eventName, data.eventData));
+                break;
+            case "Set Response Event":
+                MainThreadDispatcher.Enqueue(() => OnSetEvent?.Invoke());
+                break;
+            case "Gpt Response Event":
+                MainThreadDispatcher.Enqueue(() => OnGptEvent?.Invoke(data.eventName, data.eventData, data.functionName, data.articleNames, data.isHyperText));
+                break;
+            case "Image Retrieval Event":
+                MainThreadDispatcher.Enqueue(() =>
+                {
+                    List<Texture2D> textures = HandleBytesToTexture(data.imageData);
+                    OnImageReceieved?.Invoke(textures); 
+                });
+                break;
+            default:
+                MainThreadDispatcher.Enqueue(() => OnGptEvent?.Invoke(data.eventName, data.eventData, data.functionName, data.articleNames, data.isHyperText));
+                break;
         }
     }
-    private string[] splitText(string text)
-    {
-        string[] splitText = text.Split(',');
-        return splitText;
-    }
-    public void Start(Action<string, string> callback)
+    public void Start(Action<PythonServerDataContainer> callback)
     {
         if (callback == null) throw new ArgumentNullException(nameof(callback));
 
         streaming = true;
-        // Start the thread and pass the callback as an argument.
         thread.Start(callback);
     }
 
@@ -141,23 +165,14 @@ public class PythonNetworkInput : MonoBehaviour
     private RetrievePushData retrieval;
     public PythonNetworkDataContainer networkOut;
     [SerializeField] public string aim_response;
-    // Start is called before the first frame update
-    private void OnEnable()
-    {
 
-
-    }
-    private void OnDisable()
-    {
-
-    }
     void Start()
     {
         ForceDotNet.Force();
         retrieval = RetrievePushData.Instance;
-        retrieval.Start((string eventName, string eventData) => runOnMainThread.Enqueue(() =>
+        retrieval.Start((PythonServerDataContainer data) => runOnMainThread.Enqueue(() =>
         {
-            Debug.Log($"Received event: {eventName}, with data: {eventData}");
+            Debug.Log($"Received event: {data.eventName}, with data: {data.eventData}");
         }));
     }
 

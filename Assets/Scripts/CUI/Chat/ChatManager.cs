@@ -6,6 +6,7 @@ using UnityEngine;
 using System;
 using System.Drawing.Printing;
 using System.ServiceModel.Channels;
+using UnityEngine.TextCore.Text;
 
 public static class TimeHelper
 {
@@ -36,11 +37,10 @@ public class HyperLinkConverter
             if (string.IsNullOrEmpty(trimmedElement))
                 continue;
 
-            stringBuilder.Append($"<link=\"{linkId}\">{trimmedElement}</link>");
+            stringBuilder.Append($"<link=\"{linkId}\"><color=#0000FF>{trimmedElement}</color></link>");
             stringBuilder.Append(" and ");
         }
 
-        // Remove the last " and " if it exists
         if (stringBuilder.Length >= 5)
             stringBuilder.Remove(stringBuilder.Length - 5, 5);
 
@@ -60,7 +60,7 @@ public class HyperLinkConverter
             if (string.IsNullOrEmpty(trimmedElement))
                 continue;
 
-            stringBuilder.Append($"<link=\"{linkId}\">{trimmedElement}</link>");
+            stringBuilder.Append($"<link=\"{linkId}\"><color=#0000FF>{trimmedElement}</color></link>");
             stringBuilder.AppendLine();
         }
 
@@ -87,10 +87,13 @@ public class ChatManager : MonoBehaviour
         AddInteractiveHyperLinkMessage(text);
     }
 
-    public void AddInteractiveHyperLinkMessage(string text)
+    public void AddInteractiveHyperLinkMessage(string mainText)
     {
 
         CuiMessage message = TabManager.Instance.activeTab.tabInstance.GetComponent<CuiMessage>();
+        mainText = AstrixToBold(mainText);
+        mainText = RemovePreceeding(mainText, ":");
+
         if (message == null || message.timeText == null || message.mainText == null)
         {
             Debug.LogError("MessageUI component or Text components not found in the instantiated prefab.");
@@ -100,7 +103,7 @@ public class ChatManager : MonoBehaviour
         message.timeText.text = TimeHelper.CurrentTime;
         message.mainText.richText = true;
 
-        message.mainText.text += string.IsNullOrEmpty(message.mainText.text) ? text : "\n" + text;
+        message.mainText.text += string.IsNullOrEmpty(message.mainText.text) ? mainText : "\n" + mainText;
 
         if (message.hyperlinkHandler != null)
         {
@@ -111,6 +114,8 @@ public class ChatManager : MonoBehaviour
     public void AddNonInteractiveMessage(string mainText)
     {
         CuiMessage messageUI = TabManager.Instance.activeTab.tabInstance.GetComponent<CuiMessage>();
+        mainText = AstrixToBold(mainText);
+        mainText = RemovePreceeding(mainText, ":");
 
         if (messageUI != null && messageUI.timeText != null && messageUI.mainText != null)
         {
@@ -127,5 +132,26 @@ public class ChatManager : MonoBehaviour
     {
         string text = "Would you like to consult the <link=\"manifesto\"><color=blue>Republican</color></link> manifesto or <link=\"manifesto\"><color=blue>Democratic</color></link> manifesto?";
         AddInteractiveHyperLinkMessage(text);
+    }
+    private string AstrixToBold(string text)
+    {
+        string pattern = "\\*([^\\*]+)\\*";
+        string replacement = "<b>$1</b>";
+        Regex regex = new Regex(pattern);
+        string result = regex.Replace(text, replacement);
+
+        return result;
+    }
+    private string RemovePreceeding(string text, string character)
+    {
+        int charPosition = text.IndexOf(character);
+        if (charPosition != -1)
+        {
+            return text.Substring(charPosition + 1).Trim();
+        }
+        else
+        {
+            return text;
+        }
     }
 }

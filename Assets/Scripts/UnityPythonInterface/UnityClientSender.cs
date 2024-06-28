@@ -88,9 +88,7 @@ public class UnityClientSender : MonoBehaviour
         using (var requestSocket = new RequestSocket(">tcp://localhost:5556"))
         {
             requestSocket.SendFrame(jsonData);
-            Debug.Log("Message sent: " + jsonData);
             string message = requestSocket.ReceiveFrameString();
-            Debug.Log("Message received: " + message);
         }
     }
 

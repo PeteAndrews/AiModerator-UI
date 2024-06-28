@@ -72,8 +72,6 @@ public class DialogueEventLoader : MonoBehaviour
 
     void Start()
     {
-        // get gloabl timer from same gameobject
-        //globalTimer = GetComponent<GlobalTimer>();
         LoadEventData();
         sortedEventTimes = eventsDictionary.Keys.OrderBy(t => t).ToList();
         StartCoroutine(CheckEventsCoroutine());
@@ -82,31 +80,25 @@ public class DialogueEventLoader : MonoBehaviour
 
     private IEnumerator CheckEventsCoroutine()
     {
-        while (true) // Infinite loop to continuously check for events
+        while (true) 
         {
             if (sortedEventTimes.Count > 0 && globalTimer.Time >= sortedEventTimes[0])
             {
                 float eventTime = sortedEventTimes[0];
                 if (eventsDictionary.TryGetValue(eventTime, out EventData eventData))
                 {
-                    Debug.Log("Raised Event at: " + globalTimer.Time + "/" + globalTimer.CurrentFrame + "with event data: " + eventData.ResponseTopic);
                     currentEventData = eventData;
-                    // raise event here to notify socket server to send data to python server
                     OnSendEventData?.Invoke(eventData);
 
-                    // Remove the event after processing
                     eventsDictionary.Remove(eventTime);
                     sortedEventTimes.RemoveAt(0);
                 }
             }
-
-            // Wait for a specified interval before checking again
-            yield return new WaitForSeconds(eventCheckInterval); // Check every 0.5 seconds, adjust as needed
+            yield return new WaitForSeconds(eventCheckInterval); 
         }
     }
     private void LoadEventData()
     {
-        // Load the data from the file
         string filePath = Path.Combine(Application.dataPath, dialogueEventPath);
         if (File.Exists(filePath))
         {
@@ -124,37 +116,24 @@ public class DialogueEventLoader : MonoBehaviour
         }
     }
 
-    // Example method to retrieve data by timestamp
     private EventData GetEventData(float timestamp)
     {
         if (eventsDictionary.ContainsKey(timestamp))
         {
             return eventsDictionary[timestamp];
         }
-        return null; // Or handle the case where the timestamp isn't found
+        return null; 
     }
     private float ConvertTimeStringToSeconds(string timeStr)
     {
-        /* 
-         ** The time string is in the format "HH:MM:SS,MS" where:
-         ** HH is hours
-         ** MM is minutes
-         ** SS is seconds
-         * MS is milliseconds
-         ** 
-         ** This method will convert the time string to total seconds
-         **/
-        // Split the string into components
         string[] parts = timeStr.Split(':', ',');
-        if (parts.Length < 3) return -1; // Basic validation
+        if (parts.Length < 3) return -1; 
 
-        // Parse the parts into integers
         int hours = int.Parse(parts[0]);
         int minutes = int.Parse(parts[1]);
         int seconds = int.Parse(parts[2]);
         int milliseconds = int.Parse(parts[3]);
 
-        // Calculate total seconds
         float totalSeconds = (hours * 3600) + (minutes * 60) + seconds + (milliseconds / 1000f);
         return totalSeconds;
     }

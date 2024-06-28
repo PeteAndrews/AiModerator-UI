@@ -27,7 +27,6 @@ public class GlobalTimer : MonoBehaviour
     {
         get
         {
-            //if (videoPlayer != null && videoPlayer.isPlaying)
             if (videoPlayer != null)
             {
                 return videoPlayer.frame;
@@ -50,7 +49,6 @@ public class GlobalTimer : MonoBehaviour
 
     void Start()
     {
-        // Replace "YourVideoPlayerGameObjectName" with the actual name of the GameObject
         GameObject videoPlayerObject = GameObject.Find("MainVideo");
         if (videoPlayerObject != null)
         {

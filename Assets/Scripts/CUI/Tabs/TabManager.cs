@@ -28,7 +28,6 @@ public class FactCheckTabFactory : ITabFactory
         GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
         Tab tab = tabInstance.AddComponent<FactCheckTab>();
         return tabInstance;
-        //return new PolarityTab { tabPosition = position };
     }
 }
 public class PolarityTabFactory : ITabFactory
@@ -38,7 +37,6 @@ public class PolarityTabFactory : ITabFactory
         GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
         Tab tab = tabInstance.AddComponent<PolarityTab>();
         return tabInstance;
-        //return new PolarityTab { tabPosition = position };
     }
 }
 public class MoreInfoTabFactory : ITabFactory
@@ -48,7 +46,6 @@ public class MoreInfoTabFactory : ITabFactory
         GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
         Tab tab = tabInstance.AddComponent<MoreInfoTab>();
         return tabInstance;
-        //return new PolarityTab { tabPosition = position };
     }
 }
 public class ManifestoTabFactory : ITabFactory
@@ -58,7 +55,6 @@ public class ManifestoTabFactory : ITabFactory
         GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
         Tab tab = tabInstance.AddComponent<ManifestoTab>();
         return tabInstance;
-        //return new PolarityTab { tabPosition = position };
     }
 }
 public class OpinionTabFactory : ITabFactory
@@ -68,7 +64,6 @@ public class OpinionTabFactory : ITabFactory
         GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
         Tab tab = tabInstance.AddComponent<OpinionTab>();
         return tabInstance;
-        //return new PolarityTab { tabPosition = position };
     }
 }
 public class FollowUpFactory : ITabFactory
@@ -78,7 +73,6 @@ public class FollowUpFactory : ITabFactory
         GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
         Tab tab = tabInstance.AddComponent<FollowUpTab>();
         return tabInstance;
-        //return new PolarityTab { tabPosition = position };
     }
 }
 public class ContinueTabFactory : ITabFactory
@@ -88,11 +82,10 @@ public class ContinueTabFactory : ITabFactory
         GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
         Tab tab = tabInstance.AddComponent<ContinueTab>();
         return tabInstance;
-        //return new PolarityTab { tabPosition = position };
     }
 }
 
-public class TabManager: MonoBehaviour//, ITabManager
+public class TabManager: MonoBehaviour
 {
     public static TabManager Instance { get; private set; }
     private void Awake()
@@ -185,7 +178,6 @@ public class TabManager: MonoBehaviour//, ITabManager
         var tabDetails = System.Array.Find(tabsConfig.tabs, t => t.tabName == tabName);
         if (tabFactories.TryGetValue(tabType, out var factory))
         {
-            //Transform position = FindTabPosition(candidateName, tabDetails.positionName);
             Transform position = instTabPositions[candidateName];
             GameObject tabInstance = factory.CreateTab(tabDetails.tabPrefab, position);
             InitializeTab(tabInstance, position, candidateName, isActive: true);
@@ -201,7 +193,6 @@ public class TabManager: MonoBehaviour//, ITabManager
     }
     public void HandleOpinionTab()
     {
-        //retrieve name of candidate and previous tab
         activeTab.UserHasInteracted = true;
         string candidateName = activeTab.candidateName;
         string previousTabName = activeTab.shortName;
@@ -213,11 +204,9 @@ public class TabManager: MonoBehaviour//, ITabManager
     }
     public void HandleFollowUpTab()
     {
-        //retrieve name of candidate and previous tab
         activeTab.UserHasInteracted=true;
         string candidate = activeTab.candidateName;
         string previousTabName = activeTab.shortName;
-        //activeTab.TransitionToNextState();
         ActivateTab("follow up", candidate);
     }
     public void HandleDepthTab(float factor)

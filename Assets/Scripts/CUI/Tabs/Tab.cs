@@ -51,7 +51,6 @@ public class FactCheckActivation : IActivationBehavior
 {
     public void Activate(Tab context, string previousResponse)
     {
-        Debug.Log("Activating FactCheck features");
         context.EnableBasicFeatures();
         RequestEventData requestEventData = new RequestEventData { EventName = "Select Event", Option = "fact check" };
         UnityClientSender.Instance.SendEventRequest(requestEventData);
@@ -62,8 +61,6 @@ public class PolarityActivationBehaviour : IActivationBehavior
 {
     public void Activate(Tab context, string previousResponse)
     {
-        // Specific activation code for Polarity
-        Debug.Log("Activating Polarity features");
         context.EnableBasicFeatures();
         RequestEventData requestEventData = new RequestEventData { EventName = "Select Event", Option = "polarity" };
         UnityClientSender.Instance.SendEventRequest(requestEventData);
@@ -74,9 +71,6 @@ public class MoreInfoActivationBehaviour : IActivationBehavior
 {
     public void Activate(Tab context, string previousResponse)
     {
-
-        Debug.Log("MoreInfo Activate stuff");
-
         context.EnableBasicFeatures();
         RequestEventData requestEventData = new RequestEventData { EventName = "More Info Request Event", Option = "more info" };
         UnityClientSender.Instance.SendEventRequest(requestEventData);
@@ -86,8 +80,6 @@ public class ManifestoActivationBehaviour : IActivationBehavior
 {
     public void Activate(Tab context, string previousResponse)
     {
-        // Specific activation code for Manifesto
-        Debug.Log("Activating Manifesto features");
         context.EnableBasicFeatures();
         CuiManager.Instance.PublishManifestoMessage();
 
@@ -97,8 +89,6 @@ public class OpinionActivationBehaviour : IActivationBehavior
 {
     public void Activate(Tab context, string previousResponse)
     {
-        // Specific activation code for Manifesto
-        Debug.Log("Activating Opinion features");
         context.EnableBasicFeatures();
         RequestEventData requestEventData = new RequestEventData { EventName = "Select Event", Option = "opinion" };
         UnityClientSender.Instance.SendEventRequest(requestEventData);
@@ -109,22 +99,15 @@ public class FollowUpActivationBehaviour : IActivationBehavior
 {
     public void Activate(Tab context, string previousResponse)
     {
-        // Specific activation code for Manifesto
-        Debug.Log("Activating FollowUp features");
         context.EnableBasicFeatures();
         RequestEventData requestEventData = new RequestEventData { EventName = "Select Event", Option = "follow up" };
         UnityClientSender.Instance.SendEventRequest(requestEventData);
-
-
-
     }
 }
 public class ContinueActivationBehaviour : IActivationBehavior
 {
     public void Activate(Tab context, string previousResponse)
     {
-        // Specific activation code for Manifesto
-        Debug.Log("Activating Opinion features");
         context.EnableBasicFeatures();
         RequestEventData requestEventData = new RequestEventData { EventName = "Continue Event", Choice = previousResponse};
         UnityClientSender.Instance.SendEventRequest(requestEventData);
@@ -135,90 +118,63 @@ public class FactCheckPublishBehavior : IPublishBehaviour
 {
     public void Publish(Tab context)
     {
-        // Specific activation code for FactCheck
-        Debug.Log("FactCheck Publish stuff");
-        CuiManager.Instance.PublishToChat(context.serverResponse, false, functionName:null);
-        //context.EnableAdvancedFeatures();
+        CuiManager.Instance.PublishDepthText(context.serverResponse);
     }
 }
 public class PolarityPublishBehaviour : IPublishBehaviour
 {
     public void Publish(Tab context)
     {
-        // Specific activation code for FactCheck
-        Debug.Log("Polarity Publish stuff");
-        CuiManager.Instance.PublishToChat(context.serverResponse, false, functionName: null);
-        //context.EnableAdvancedFeatures();
+        CuiManager.Instance.PublishDepthText(context.serverResponse);
     }
 }
 public class MoreInfoPublishBehaviour : IPublishBehaviour
 {
     public void Publish(Tab context)
     {
-        Debug.Log("MoreInfo Publish stuff");
-        CuiManager.Instance.PublishToChat(context.serverResponse, false, functionName: null);
-
-        //context.EnableBasicFeatures();
+        CuiManager.Instance.PublishDepthText(context.serverResponse);
     }
 }
 public class MoreInfoPublishKeywordsBehaviour : IPublishBehaviour
 {
     public void Publish(Tab context)
     {
-        Debug.Log("MoreInfo Publish stuff");
         CuiManager.Instance.PublishToChat(context.serverResponse, true, functionName : "more info");
-
-        //context.EnableBasicFeatures();
     }
 }
 public class ManifestoPublishBehaviour : IPublishBehaviour
 {
     public void Publish(Tab context)
     {
-        // Specific activation code for MoreInfo
-        Debug.Log("Manifesto Publish stuff");
-        CuiManager.Instance.PublishToChat(context.serverResponse, false, functionName: null);
-
-        //context.EnableBasicFeatures();
+        CuiManager.Instance.PublishDepthText(context.serverResponse);
     }
 }
 public class OpinionPublishBehaviour : IPublishBehaviour
 {
     public void Publish(Tab context)
     {
-        Debug.Log("Opinion Publish stuff");
         CuiManager.Instance.PublishToChat(context.serverResponse, true, functionName: "opinion");
-        //context.EnableBasicFeatures();
     }
 }
 public class FollowUpPublishBehaviour : IPublishBehaviour
 {
     public void Publish(Tab context)
     {
-        // Specific activation code for MoreInfo
-        Debug.Log("FollowUp Publish stuff");
         CuiManager.Instance.PublishToChat(context.serverResponse, true, functionName: "follow up");
-        //context.EnableBasicFeatures();
     }
 }
 public class FollowUpContinuedPublishBehaviour : IPublishBehaviour
 {
     public void Publish(Tab context)
     {
-        // Specific activation code for MoreInfo
-        Debug.Log("FollowUp Publish stuff");
-        CuiManager.Instance.PublishToChat(context.serverResponse, false, functionName: "follow up");
-        //context.EnableBasicFeatures();
+        CuiManager.Instance.PublishDepthText(context.serverResponse);
     }
 }
 public class ContinuePublishBehaviour : IPublishBehaviour
 {
     public void Publish(Tab context)
     {
-        // Specific activation code for MoreInfo
-        Debug.Log("Continue Publish stuff");
         CuiManager.Instance.PublishToChat(context.serverResponse, false, functionName: null);
-        //context.EnableBasicFeatures();
     }
 }
 public class ActivationState : ITabState
@@ -246,7 +202,6 @@ public class ActivationState : ITabState
 
     public void HandleTransition(Tab context)
     {
-        //context.SetState(new WaitServerState());
     }
 
     public void UpdateState(Tab context)
@@ -268,7 +223,6 @@ public class PublishState : ITabState
     }
     public void EnterState(Tab context)
     {
-        //ChatManager.publish(context.serverResponse);
         publishBehavior.Publish(context);
         context.IsReadyForNextState = true;
     }
@@ -298,14 +252,10 @@ public class PublishState : ITabState
 
 
 
-
-
-
 public class WaitServerState : ITabState
 {
     public void EnterState(Tab context)
     {
-        //Instantiate dots etc...
     }
 
     public void ExitState(Tab context)
@@ -315,10 +265,8 @@ public class WaitServerState : ITabState
 
     public void UpdateState(Tab context)
     {
-        //Debug.Log("Waiting for server response...");
         if (context.HasReceivedServerResponse)
         {
-            Debug.Log("Received server response: " + context.serverResponse);
             context.TransitionToNextState();
         }
     }
@@ -340,20 +288,14 @@ public class WaitUserSelectionState : ITabState
 
     public void EnterState(Tab context)
     {
-        // Subscribe to events
-        Debug.Log("EnterState of WaitUserSelectionState, Registering to Events!");
         CuiManager.Instance.OnMoreInfoSelected += HandleMoreInfoSelected;
         CuiManager.Instance.OnManifestoSelected += HandleManifestoSelected;
         CuiManager.Instance.OnOpinionSelected += HandleOpinionSelected;
         CuiManager.Instance.OnFollowUpSelected += HandleFollowUpSelected;
-
-        // Assuming CuiManager is accessible statically or passed into the context
-        // CuiManager.Instance.PublishToChat(context.serverResponse, true);
     }
 
     public void ExitState(Tab context)
     {
-        // Unsubscribe from events
         CuiManager.Instance.OnMoreInfoSelected -= HandleMoreInfoSelected;
         CuiManager.Instance.OnManifestoSelected -= HandleManifestoSelected;
         CuiManager.Instance.OnOpinionSelected -= HandleOpinionSelected;
@@ -364,17 +306,14 @@ public class WaitUserSelectionState : ITabState
 
     public void UpdateState(Tab context)
     {
-        Debug.Log("Waiting for user selection...");
         if (userHasSelected)
         {
-            Debug.Log("User has selected, transitioning to next state");
             context.TransitionToNextState();
         }
     }
 
     private void HandleMoreInfoSelected(string linkText)
     {
-        Debug.Log($"User selected: {linkText}");
         userHasSelected = true;
         RequestEventData requestEventData = new RequestEventData { EventName = "More Info Event", Option = "more info", Choice = linkText };
         UnityClientSender.Instance.SendEventRequest(requestEventData);
@@ -382,7 +321,6 @@ public class WaitUserSelectionState : ITabState
 
     private void HandleOpinionSelected(string linkText)
     {
-        Debug.Log($"User selected: {linkText}");
         userHasSelected = true;
         throw new NotImplementedException();
         // Instantiate poll
@@ -390,14 +328,12 @@ public class WaitUserSelectionState : ITabState
 
     private void HandleManifestoSelected(string linkText)
     {
-        Debug.Log($"User selected: {linkText}");
         userHasSelected = true;
         RequestEventData requestEventData = new RequestEventData { EventName = "Select Event", Option = "manifesto", Choice = linkText };
         UnityClientSender.Instance.SendEventRequest(requestEventData);
     }
     private void HandleFollowUpSelected(string linkText)
     {
-        Debug.Log($"User selected: {linkText}");
         userHasSelected = true;
         RequestEventData requestEventData = new RequestEventData { EventName = "Continue Event", Option = "continue", Choice = linkText };
         UnityClientSender.Instance.SendEventRequest(requestEventData);
@@ -427,15 +363,12 @@ public class WaitUserInteractionState : ITabState
 
     public void HandleTransition(Tab context)
     {
-        // Handle state transition if necessary
     }
 
     public void UpdateState(Tab context)
     {
-        Debug.Log("Waiting for user interaction...");
         if (context.UserHasInteracted)
         {
-            Debug.Log("User has interacted, transitioning to next state");
             context.TransitionToNextState();
         }
     }
@@ -463,7 +396,7 @@ public class TerminateState : ITabState
             TabManager.Instance.ActivateTab(nextTabName, context.candidateName);
         }
 
-        GameObject.Destroy(context.gameObject); // Destroy the GameObject this script is attached to
+        GameObject.Destroy(context.gameObject); 
     }
 
     public void ExitState(Tab context)
@@ -505,14 +438,11 @@ public class Tab : MonoBehaviour
     {
         RetrievePushData.Instance.OnGptEvent += ReceiveDataFromServer;
         RetrievePushData.Instance.OnMoreInfoResponseEvent += RecieveKeywordsFromServer;
-
-
     }
     private void OnDisable()
     {
         RetrievePushData.Instance.OnGptEvent -= ReceiveDataFromServer;
         RetrievePushData.Instance.OnMoreInfoResponseEvent -= RecieveKeywordsFromServer;
-
     }
     public void SetStateSequence(List<ITabState> sequence)
     {
@@ -529,7 +459,6 @@ public class Tab : MonoBehaviour
         }
         else
         {
-            Debug.Log("Reached the end of the state sequence.");
         }
     }
 
@@ -546,20 +475,15 @@ public class Tab : MonoBehaviour
     }
     public void EnableAdvancedFeatures()
     {
-        Debug.Log("Advanced features enabled.");
         UserController.Instance.SetTouchInteractionEnabled(true);
-
     }
 
     public void EnableBasicFeatures()
     {
-        Debug.Log("Basic features enabled.");
         UserController.Instance.SetTouchInteractionEnabled(false);
-
     }
     public void RequestDataFromServer()
     {
-        Debug.Log("Requesting data from server...");
     }
     private void RecieveKeywordsFromServer(string eventName, string keywords)
     {
@@ -568,10 +492,8 @@ public class Tab : MonoBehaviour
     }
     private void ReceiveDataFromServer(string eventName, string text, string functionName, string articleName, bool isHyperText)
     {
-        Debug.Log("Received data from server in Tab class: " + text);
         serverResponse = text;
         HasReceivedServerResponse = true;
-        // Potentially move to the next state directly here or flag for the next update cycle
     }
 
 }
@@ -650,7 +572,7 @@ public class OpinionTab : Tab
             new WaitServerState(),
             new PublishState(new OpinionPublishBehaviour()),
             new WaitUserSelectionState(),
-            new TerminateState() //new TerminateState("continue")
+            new TerminateState() 
         };
         SetStateSequence(states);
     }
@@ -665,10 +587,10 @@ public class FollowUpTab : Tab
             new WaitServerState(),
             new PublishState(new FollowUpPublishBehaviour()),
             new WaitUserSelectionState(),
-            new WaitServerState(),//thinking continue tab should take the output from last tab
+            new WaitServerState(),
             new PublishState(new FollowUpContinuedPublishBehaviour()),
             new WaitUserInteractionState(),
-            new TerminateState()//as continue takes the user input and gives a response.
+            new TerminateState()
         };
         SetStateSequence(states);
     }

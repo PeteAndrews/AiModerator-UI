@@ -31,7 +31,6 @@ public class FunctionButton : MonoBehaviour
         button.interactable = false;
         if (button != null)
         {
-            //get parent gameobject name
             string candidateName = mapCandidateNames[transform.parent.name];
             button.onClick.AddListener(() => {
                 OnSelect();
