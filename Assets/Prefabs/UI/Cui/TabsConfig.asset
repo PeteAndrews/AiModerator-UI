@@ -12,116 +12,88 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f411e65591c9fc049ac9e9422366a3a3, type: 3}
   m_Name: TabsConfig
   m_EditorClassIdentifier: 
-  tabs:
+  tabMetaData:
   - tabName: tab-factCheck-trump
     shortName: fact check
-    candidateName: Trump
+    candidateName: trump
     tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
     positionName: first
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
-  - tabName: tab-manifesto-trump
-    shortName: manifesto
-    candidateName: Trump
+  - tabName: tab-polarity-trump
+    shortName: polarity
+    candidateName: trump
     tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
     positionName: second
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-moreInfo-trump
     shortName: more info
-    candidateName: Trump
+    candidateName: trump
     tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
     positionName: third
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
-  - tabName: tab-polarity-trump
-    shortName: polarity
-    candidateName: Trump
+  - tabName: tab-manifesto-trump
+    shortName: manifesto
+    candidateName: trump
     tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
     positionName: fourth
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-opinion-trump
     shortName: opinion
-    candidateName: Trump
+    candidateName: trump
     tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
-    positionName: 
+    positionName: fifth
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-followup-trump
-    shortName: followup
-    candidateName: Trump
+    shortName: follow up
+    candidateName: trump
     tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
-    positionName: 
-    tabPosition: {fileID: 0}
-    tabInstance: {fileID: 0}
-  - tabName: tab-continue-trump
-    shortName: continue
-    candidateName: Trump
-    tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
-    positionName: 
-    tabPosition: {fileID: 0}
-    tabInstance: {fileID: 0}
-  - tabName: tab-depth-trump
-    shortName: depth
-    candidateName: Trump
-    tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
-    positionName: 
+    positionName: sixth
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-factCheck-biden
     shortName: fact check
-    candidateName: Biden
+    candidateName: biden
     tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
     positionName: first
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
-  - tabName: tab-manifesto-biden
-    shortName: manifesto
-    candidateName: Biden
+  - tabName: tab-polarity-biden
+    shortName: polarity
+    candidateName: biden
     tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
     positionName: second
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-moreInfo-biden
     shortName: more info
-    candidateName: Biden
+    candidateName: biden
     tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
     positionName: third
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
-  - tabName: tab-polarity-biden
-    shortName: polarity
-    candidateName: Biden
+  - tabName: tab-manifesto-biden
+    shortName: manifesto
+    candidateName: biden
     tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
     positionName: fourth
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-opinion-biden
     shortName: opinion
-    candidateName: Biden
+    candidateName: biden
     tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
-    positionName: 
+    positionName: fifth
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-followup-biden
     shortName: followup
-    candidateName: Biden
+    candidateName: biden
     tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
-    positionName: 
-    tabPosition: {fileID: 0}
-    tabInstance: {fileID: 0}
-  - tabName: tab-continue-biden
-    shortName: continue
-    candidateName: Biden
-    tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
-    positionName: 
-    tabPosition: {fileID: 0}
-    tabInstance: {fileID: 0}
-  - tabName: tab-depth-biden
-    shortName: depth
-    candidateName: Biden
-    tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
-    positionName: 
+    positionName: sixth
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}

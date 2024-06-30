@@ -16,75 +16,6 @@ public class TabPosition
     public string position;
     public Transform transform;
 }
-public interface ITabFactory
-{
-    GameObject CreateTab(GameObject tabPrefab, Transform position);
-}
-
-public class FactCheckTabFactory : ITabFactory
-{
-    public GameObject CreateTab(GameObject tabPrefab, Transform position)
-    {
-        GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
-        Tab tab = tabInstance.AddComponent<FactCheckTab>();
-        return tabInstance;
-    }
-}
-public class PolarityTabFactory : ITabFactory
-{
-    public GameObject CreateTab(GameObject tabPrefab, Transform position)
-    {
-        GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
-        Tab tab = tabInstance.AddComponent<PolarityTab>();
-        return tabInstance;
-    }
-}
-public class MoreInfoTabFactory : ITabFactory
-{
-    public GameObject CreateTab(GameObject tabPrefab, Transform position)
-    {
-        GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
-        Tab tab = tabInstance.AddComponent<MoreInfoTab>();
-        return tabInstance;
-    }
-}
-public class ManifestoTabFactory : ITabFactory
-{
-    public GameObject CreateTab(GameObject tabPrefab, Transform position)
-    {
-        GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
-        Tab tab = tabInstance.AddComponent<ManifestoTab>();
-        return tabInstance;
-    }
-}
-public class OpinionTabFactory : ITabFactory
-{
-    public GameObject CreateTab(GameObject tabPrefab, Transform position)
-    {
-        GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
-        Tab tab = tabInstance.AddComponent<OpinionTab>();
-        return tabInstance;
-    }
-}
-public class FollowUpFactory : ITabFactory
-{
-    public GameObject CreateTab(GameObject tabPrefab, Transform position)
-    {
-        GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
-        Tab tab = tabInstance.AddComponent<FollowUpTab>();
-        return tabInstance;
-    }
-}
-public class ContinueTabFactory : ITabFactory
-{
-    public GameObject CreateTab(GameObject tabPrefab, Transform position)
-    {
-        GameObject tabInstance = GameObject.Instantiate(tabPrefab, position);
-        Tab tab = tabInstance.AddComponent<ContinueTab>();
-        return tabInstance;
-    }
-}
-
 public class TabManager: MonoBehaviour
 {
     public static TabManager Instance { get; private set; }
@@ -116,7 +47,6 @@ public class TabManager: MonoBehaviour
     public List<TabPosition> tabPositionsTrump;
     public List<TabPosition> tabPositionsBiden;
     private Dictionary<string, List<TabPosition>> tabPositions;
-
     public Dictionary<string, string> mapTabs = new Dictionary<string, string>()
     {
         {"fact check Trump", "tab-factCheck-trump" },
@@ -175,7 +105,7 @@ public class TabManager: MonoBehaviour
     {
         string fullName = tabType + " " + candidateName;
         string tabName = mapTabs.GetValueOrDefault(fullName);
-        var tabDetails = System.Array.Find(tabsConfig.tabs, t => t.tabName == tabName);
+        var tabDetails = System.Array.Find(tabsConfig.tabMetaData, t => t.tabName == tabName);
         if (tabFactories.TryGetValue(tabType, out var factory))
         {
             Transform position = instTabPositions[candidateName];
@@ -217,5 +147,4 @@ public class TabManager: MonoBehaviour
     {
         Destroy(activeTab.gameObject);
     }
-
 }
