@@ -142,7 +142,6 @@ public class ManifestoTab : Tab
         List<ITabState> states = new List<ITabState>
         {
             new ActivationState(new ManifestoActivationBehaviour(), previousResponse : null),
-            new WaitUserSelectionState(),
             new WaitServerState(),
             new PublishState(new ManifestoPublishBehaviour()),
             new WaitUserInteractionState(),

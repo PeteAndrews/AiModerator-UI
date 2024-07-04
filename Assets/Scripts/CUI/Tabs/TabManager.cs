@@ -91,13 +91,13 @@ public class TabManager: MonoBehaviour
     {
         return activeTab != null ? activeTab.shortName == functionName : false;
     }
-    private void InitializeTab(GameObject tabInstance, Transform position, string candidateName, bool isActive)
+    private void InitializeTab(GameObject tabInstance, Transform position, string candidateName, string tabType, bool isActive)
     {
 
         Tab tab = tabInstance.GetComponent<Tab>();
         tab.tabPosition = position;
         tab.candidateName = candidateName;
-        tab.shortName = tab.name;
+        tab.shortName = tabType;
         tab.tabInstance = tabInstance;
         activeTab = tab;
     }
@@ -110,7 +110,7 @@ public class TabManager: MonoBehaviour
         {
             Transform position = instTabPositions[candidateName];
             GameObject tabInstance = factory.CreateTab(tabDetails.tabPrefab, position);
-            InitializeTab(tabInstance, position, candidateName, isActive: true);
+            InitializeTab(tabInstance, position, candidateName, tabType, isActive: true);
         }
     }
     public void SwitchTab(string eventName, string candidateName)
@@ -146,5 +146,6 @@ public class TabManager: MonoBehaviour
     public void DestroyActiveTab()
     {
         Destroy(activeTab.gameObject);
+        activeTab = null;
     }
 }

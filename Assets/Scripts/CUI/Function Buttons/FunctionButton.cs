@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,30 +6,33 @@ public class FunctionButton : MonoBehaviour
 {
     public delegate void ButtonClickHandler(string buttonName, string candidate);
     public event ButtonClickHandler OnButtonClicked;
+
     private static Dictionary<string, string> mapCandidateNames = new Dictionary<string, string>()
     {
-        {"FunctionButtonsParent-Trump", "Trump"},
-        {"FunctionButtonsParent-Biden", "Biden"}
+        {"FunctionButtonsParent-Trump(Clone)", "Trump"},
+        {"FunctionButtonsParent-Biden(Clone)", "Biden"}
     };
-    private Button button;
-    private Image buttonImage;
-    public Color activeColour;
-    public Color inactiveColour;
-    public Color selectedColour;
 
+    private Button button;
+    private Image buttonImage;  
+    public string candidateName;
+
+    public Sprite activeSprite;
+    public Sprite inactiveSprite;
+    public Sprite selectedSprite;
 
     private void Awake()
     {
         buttonImage = GetComponent<Image>();
         button = GetComponent<Button>();
-
     }
+
     void Start()
     {
-        button.interactable = false;
+        button.interactable = true;
         if (button != null)
         {
-            string candidateName = mapCandidateNames[transform.parent.name];
+            candidateName = mapCandidateNames[transform.parent.name];
             button.onClick.AddListener(() => {
                 OnSelect();
                 OnButtonClicked?.Invoke(gameObject.name, candidateName);
@@ -42,31 +43,34 @@ public class FunctionButton : MonoBehaviour
             Debug.LogError("Button component not found on the object!");
         }
     }
+
     private void OnSelect()
     {
         button.interactable = false;
-        ChangeButtonColour(selectedColour);
+        ChangeButtonSprite(selectedSprite);
         Debug.Log("Button Clicked");
     }
-    private void ChangeButtonColour(Color colour)
+
+    private void ChangeButtonSprite(Sprite sprite)
     {
         if (buttonImage != null)
         {
-            buttonImage.color = colour;
-        
+            buttonImage.sprite = sprite;
         }
     }
+
     public void Activate()
     {
         button.interactable = true;
-        ChangeButtonColour(activeColour);
+        ChangeButtonSprite(activeSprite);
     }
-    public  void Deactivate()
+
+    public void Deactivate()
     {
         button.interactable = false;
-        ChangeButtonColour(inactiveColour);
-
+        ChangeButtonSprite(inactiveSprite);
     }
+
     public void DestroyButton()
     {
         Destroy(gameObject);

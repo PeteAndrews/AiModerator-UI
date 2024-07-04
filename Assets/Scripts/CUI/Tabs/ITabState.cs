@@ -53,7 +53,10 @@ public class ManifestoActivationBehaviour : IActivationBehavior
     public void Activate(Tab context, string previousResponse)
     {
         context.EnableBasicFeatures();
-        CuiManager.Instance.PublishManifestoMessage();
+        RequestEventData requestEventData = new RequestEventData { EventName = "Select Event", Option = "manifesto" };
+        UnityClientSender.Instance.SendEventRequest(requestEventData);
+
+        //CuiManager.Instance.PublishManifestoMessage();
 
     }
 }
@@ -252,7 +255,7 @@ public class WaitUserSelectionState : ITabState
     public void EnterState(Tab context)
     {
         CuiManager.Instance.OnMoreInfoSelected += HandleMoreInfoSelected;
-        CuiManager.Instance.OnManifestoSelected += HandleManifestoSelected;
+        //CuiManager.Instance.OnManifestoSelected += HandleManifestoSelected;
         CuiManager.Instance.OnOpinionSelected += HandleOpinionSelected;
         CuiManager.Instance.OnFollowUpSelected += HandleFollowUpSelected;
     }
@@ -260,7 +263,7 @@ public class WaitUserSelectionState : ITabState
     public void ExitState(Tab context)
     {
         CuiManager.Instance.OnMoreInfoSelected -= HandleMoreInfoSelected;
-        CuiManager.Instance.OnManifestoSelected -= HandleManifestoSelected;
+        //CuiManager.Instance.OnManifestoSelected -= HandleManifestoSelected;
         CuiManager.Instance.OnOpinionSelected -= HandleOpinionSelected;
         CuiManager.Instance.OnFollowUpSelected -= HandleFollowUpSelected;   
 
@@ -285,16 +288,16 @@ public class WaitUserSelectionState : ITabState
     private void HandleOpinionSelected(string linkText)
     {
         userHasSelected = true;
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
         // Instantiate poll
     }
-
+    /*
     private void HandleManifestoSelected(string linkText)
     {
         userHasSelected = true;
         RequestEventData requestEventData = new RequestEventData { EventName = "Select Event", Option = "manifesto", Choice = linkText };
         UnityClientSender.Instance.SendEventRequest(requestEventData);
-    }
+    }*/
     private void HandleFollowUpSelected(string linkText)
     {
         userHasSelected = true;
@@ -349,13 +352,16 @@ public class TerminateState : ITabState
             TabManager.Instance.ActivateTab(nextTabName, context.candidateName);
         }
 
-        GameObject.Destroy(context.gameObject); 
+        GameObject.Destroy(context.gameObject);
+        TabManager.Instance.activeTab = null;
+        Debug.Log("Terminating Tab");
+        //CuiManager.Instance.DeactivateFunctionButton();
+
     }
 
     public void ExitState(Tab context)
     {
         // Deactivate Function Button
-        CuiManager.Instance.DeactivateFunctionButton();
     }
 
     public void UpdateState(Tab context)

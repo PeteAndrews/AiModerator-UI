@@ -111,9 +111,13 @@ public class CuiManager : MonoBehaviour
     }
     public void PublishToChat(string text, bool isInteractive, string functionName = null)
     {
-        if (isInteractive)
+        if (isInteractive && functionName!="opinion")
         {
             chatManager.AddInteractiveMessage(text, functionName);
+        }
+        else if (isInteractive && functionName == "opinion")
+        {
+            chatManager.AddInteractivePollMessage(text);
         }
         else
         {
@@ -145,8 +149,8 @@ public class CuiManager : MonoBehaviour
     }
     private void HandleSingleTapEvent()
     {
-        DeactivateFunctionButton();
         TabManager.Instance.DestroyActiveTab();
+        DeactivateFunctionButton();
     }
     private void HandlePinchZoomEvent(float factor)
     {

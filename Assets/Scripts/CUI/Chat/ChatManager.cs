@@ -7,6 +7,8 @@ using System;
 using System.Drawing.Printing;
 using System.ServiceModel.Channels;
 using UnityEngine.TextCore.Text;
+using Unity.VisualScripting;
+using System.Linq;
 
 public static class TimeHelper
 {
@@ -23,8 +25,26 @@ public class HyperLinkConverter
             case "follow up":
                 return ConvertByNumbers(input, ref functionName);
             default:
-                return ConvertByNumbers(input, ref functionName);
+                return ConvertByLineBreaks(input, ref functionName);
         }
+    }
+    private string ConvertByLineBreaks(string input, ref string linkId)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        string[] elements = input.Split('\n');
+
+        foreach (string element in elements)
+        {
+            string trimmedElement = element.Trim();
+            if (string.IsNullOrEmpty(trimmedElement))
+                continue;
+
+            stringBuilder.Append($"<link=\"{linkId}\"><color=#FF0000>{trimmedElement}</color></link>");
+            stringBuilder.AppendLine();
+        }
+
+        stringBuilder.Append(" for more info.");
+        return stringBuilder.ToString();
     }
     private string ConvertByCommas(string input, ref string linkId)
     {
@@ -60,7 +80,7 @@ public class HyperLinkConverter
             if (string.IsNullOrEmpty(trimmedElement))
                 continue;
 
-            stringBuilder.Append($"<link=\"{linkId}\"><color=#0000FF>{trimmedElement}</color></link>");
+            stringBuilder.Append($"<link=\"{linkId}\"><color=#FFFEC5>{trimmedElement}</color></link>");
             stringBuilder.AppendLine();
         }
 
@@ -77,7 +97,29 @@ public class ChatManager : MonoBehaviour
         AdjustColliderToText adjustCollider = TabManager.Instance.activeTab.tabInstance.GetComponent<AdjustColliderToText>();
         StartCoroutine(adjustCollider.UpdateColliderSizeAfterFrame());
     }
+    public void AddInteractivePollMessage(string text)
+    {
+        Dictionary<string, string> dictionary = new Dictionary<string, string>();
+        string[] textList = text.Split('\n');
+        string headText = textList[0];
+        textList = textList.Skip(2).ToArray();
+        string[] cleanTextList = new string[4];
 
+        for (int i =0; i< 4; i++)
+        {
+            string[] elements = textList[i].Split('[');
+            string value = elements[1].Replace("]", "");
+            dictionary.Add(elements[0], value);
+            cleanTextList[i] = elements[0];
+        }
+
+        string combinedText = string.Join("\n", cleanTextList);
+        string hyperLinkText = hyperLinkConverter.Convert(combinedText, "opinion");
+        headText = AstrixToBold(headText);
+        combinedText = headText + "\n" + hyperLinkText;
+        AddInteractiveHyperLinkMessage(combinedText);
+
+    }
     public void AddInteractiveMessage(string text, string functionName)
     {
         if (functionName != null)
