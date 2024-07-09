@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -28,6 +29,10 @@ public class EventData
     public string SearchQueries;
     public string Summary;
     public string Candidate;
+    public string ToJson()
+    {
+        return JsonConvert.SerializeObject(this);
+    }
 
 }
 

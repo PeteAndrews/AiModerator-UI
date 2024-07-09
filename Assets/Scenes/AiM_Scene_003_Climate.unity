@@ -350,7 +350,6 @@ MonoBehaviour:
   chatManager: {fileID: 292237762}
   functionButtonManager: {fileID: 1149014228}
   depthTextManager: {fileID: 135480820}
-  mode: security
 --- !u!1 &334640497
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,7 +477,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Trump Needs a Slap! And Biden Needs to Go Home!
+  m_text: 'Trump Needs a Slap! And Biden Needs to Go Home!
+
+    Climate'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -655,8 +656,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3fb4976d852e9f4aa947c5535e46abd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventCheckInterval: 0.2
-  dialogueEventPath: data/events_fi_json-double.json
+  eventCheckInterval: 0.1
+  dialogueEventPath: data/climate_events.json
   currentEventData:
     EventName: System Event
     Iteration: 0
@@ -805,9 +806,7 @@ Transform:
   m_LocalPosition: {x: 23.910273, y: -36.903584, z: 552.7385}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1523807128}
-  - {fileID: 1956004947}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &897460252
@@ -822,7 +821,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2adf7bd75b2a9624b9be7c3780ed4aa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mode: security
+  mode: climate
 --- !u!114 &897460253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1603,37 +1602,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &1523807127
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1523807128}
-  m_Layer: 0
-  m_Name: PythonDataReciever
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1523807128
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1523807127}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 897460251}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1616696074
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2205,37 +2173,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!1 &1956004946
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1956004947}
-  m_Layer: 0
-  m_Name: UnityDataSender
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1956004947
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956004946}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 897460251}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2075502215
 GameObject:
   m_ObjectHideFlags: 0
@@ -2282,7 +2219,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2075502215}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: f0931572ef0247244810d3cc63b23384, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 9b4a09e7a413ff04dbc0436ad0d487f6, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -2375,7 +2312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   saveFolder: CuiLogs
-  saveName: Cui-Log-NattionaL-Security-Test.txt
+  saveName: Cui-Log-Climate-One.txt
 --- !u!4 &2139790944
 Transform:
   m_ObjectHideFlags: 0

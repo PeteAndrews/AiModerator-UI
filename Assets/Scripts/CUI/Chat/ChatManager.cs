@@ -70,7 +70,8 @@ public class HyperLinkConverter
 
     private string ConvertByNumbers(string input, ref string linkId)
     {
-        StringBuilder stringBuilder = new StringBuilder();
+        string preText = "Select one of the following, \n";
+        StringBuilder stringBuilder = new StringBuilder(preText);
         string pattern = @"(?<=\n)(?=\d+\.)|(?<=\.)\s*(?=\d+\.)";
         string[] elements = Regex.Split(input, pattern);
 
@@ -83,7 +84,6 @@ public class HyperLinkConverter
             stringBuilder.Append($"<link=\"{linkId}\"><color=#FFFEC5>{trimmedElement}</color></link>");
             stringBuilder.AppendLine();
         }
-
         stringBuilder.Append(" for more info.");
         return stringBuilder.ToString();
     }

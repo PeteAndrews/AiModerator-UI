@@ -32,7 +32,7 @@ public class CuiManager : MonoBehaviour
     [SerializeField] ChatManager chatManager;
     [SerializeField] FunctionButtonManager functionButtonManager;
     [SerializeField] DepthTextManager depthTextManager;
-    public string mode;
+   // public string mode;
     private EventData currentEventData;
     public event Action<string> OnMoreInfoSelected;
     public event Action<string> OnOpinionSelected;
@@ -59,12 +59,6 @@ public class CuiManager : MonoBehaviour
         UserController.Instance.OnSingleTapEvent -= HandleSingleTapEvent;
         UserController.Instance.OnPinchZoomEvent -= HandlePinchZoomEvent;
     }
-
-    private void Start()
-    {
-        UnityClientSender.Instance.mode = mode;
-
-    }
     private void HandleImageEvent(List<Texture2D> texture2Ds)
     {
         haveImage = true;
@@ -78,11 +72,8 @@ public class CuiManager : MonoBehaviour
     private IEnumerator HandleDialogueEventCoroutine(EventData eventData)
     {
         currentEventData = eventData;
-        UnityClientSender.Instance.SendEventRequest(new RequestEventData
-        {
-            EventName = "Image Request Event",
-            Option = eventData.Keywords,
-        });
+        eventData.EventName = "Image Request Event";
+        UnityClientSender.Instance.ImageRequestAndDataSet(eventData);
         yield return new WaitUntil(() => haveImage);
         headlineBanner.ActivateBanner(bannerImages, currentEventData.Summary);
         functionButtonManager.ActivateFunctionButtons(eventData.Candidate);

@@ -19,41 +19,36 @@ public class RequestEventData
 }
 public class UnityClientSender : MonoBehaviour
 {
-    private static UnityClientSender _instance;
-    public static UnityClientSender Instance
+    public static UnityClientSender Instance { get; private set; }
+    private void Awake()
     {
-        get
+        Debug.Log("Awake called on UnityClientSender with instance ID: " + GetInstanceID());
+        if (Instance == null)
         {
-            if (_instance == null)
-            {
-                var go = new GameObject("UnityClientSender");
-                _instance = go.AddComponent<UnityClientSender>();
-                DontDestroyOnLoad(go);
-            }
-            return _instance;
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            Debug.Log("Set as singleton instance: " + GetInstanceID());
+        }
+        else
+        {
+            Debug.Log("Destroying duplicate UnityClientSender instance: " + GetInstanceID());
+            Destroy(gameObject);
         }
     }
 
     private bool isWaitingForResponse = false;
     public string mode;
 
-    private void Awake()
-    {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject);
-        }
-    }
-
     void Start()
     {
         SubscribeEvents();
         Debug.Log("Unity client Start Set Mode: " + mode);
+
     }
 
     private void SubscribeEvents()
     {
-        DialogueEventLoader.Instance.OnSendEventData += HandleEvent;
+        //DialogueEventLoader.Instance.OnSendEventData += HandleEvent;
         RetrievePushData.Instance.OnSetEvent += OnSetResponseReceived;
     }
 
@@ -77,7 +72,11 @@ public class UnityClientSender : MonoBehaviour
         while (isWaitingForResponse)
             yield return null;
     }
-
+    public void ImageRequestAndDataSet(EventData eventData)
+    {
+        Debug.Log("Image Request and Data Set called on UnityClientSender with instance ID: " + GetInstanceID());
+        SendEvent(eventData.ToJson());
+    }
     public void OnSetResponseReceived()
     {
         isWaitingForResponse = false;

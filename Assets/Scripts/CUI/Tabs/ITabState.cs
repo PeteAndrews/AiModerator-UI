@@ -128,6 +128,8 @@ public class OpinionPublishBehaviour : IPublishBehaviour
 {
     public void Publish(Tab context)
     {
+        Debug.Log("Opinion Publish Behaviour");
+
         CuiManager.Instance.PublishToChat(context.serverResponse, true, functionName: "opinion");
     }
 }
@@ -135,6 +137,7 @@ public class FollowUpPublishBehaviour : IPublishBehaviour
 {
     public void Publish(Tab context)
     {
+        Debug.Log("Follow Up Publish Behaviour");
         CuiManager.Instance.PublishToChat(context.serverResponse, true, functionName: "follow up");
     }
 }
@@ -303,6 +306,7 @@ public class WaitUserSelectionState : ITabState
         userHasSelected = true;
         RequestEventData requestEventData = new RequestEventData { EventName = "Continue Event", Option = "continue", Choice = linkText };
         UnityClientSender.Instance.SendEventRequest(requestEventData);
+        Debug.Log("Follow Up Selected and Moving to Continue Event");
     }
     public void HandleTransition(Tab context)
     {

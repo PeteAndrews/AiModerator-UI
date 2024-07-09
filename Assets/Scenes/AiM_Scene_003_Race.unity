@@ -350,7 +350,6 @@ MonoBehaviour:
   chatManager: {fileID: 292237762}
   functionButtonManager: {fileID: 1149014228}
   depthTextManager: {fileID: 135480820}
-  mode: security
 --- !u!1 &334640497
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,7 +477,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Trump Needs a Slap! And Biden Needs to Go Home!
+  m_text: 'Trump Needs a Slap! And Biden Needs to Go Home!
+
+    Immigration and Race'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -655,8 +656,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3fb4976d852e9f4aa947c5535e46abd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventCheckInterval: 0.2
-  dialogueEventPath: data/events_fi_json-double.json
+  eventCheckInterval: 0.1
+  dialogueEventPath: data/race_immigration_events-condensed.json
   currentEventData:
     EventName: System Event
     Iteration: 0
@@ -822,7 +823,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2adf7bd75b2a9624b9be7c3780ed4aa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mode: security
+  mode: race
 --- !u!114 &897460253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2282,7 +2283,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2075502215}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: f0931572ef0247244810d3cc63b23384, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: a5e42c57136f7e84694491cffbc54da4, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -2375,7 +2376,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   saveFolder: CuiLogs
-  saveName: Cui-Log-NattionaL-Security-Test.txt
+  saveName: Cui-Log-Race-One.txt
 --- !u!4 &2139790944
 Transform:
   m_ObjectHideFlags: 0

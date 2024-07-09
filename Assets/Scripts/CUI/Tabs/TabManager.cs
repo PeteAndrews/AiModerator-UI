@@ -125,7 +125,6 @@ public class TabManager: MonoBehaviour
     {
         activeTab.UserHasInteracted = true;
         string candidateName = activeTab.candidateName;
-        string previousTabName = activeTab.shortName;
         SwitchTab("opinion", candidateName);
     }
     public void HandleReactTab()
@@ -136,8 +135,7 @@ public class TabManager: MonoBehaviour
     {
         activeTab.UserHasInteracted=true;
         string candidate = activeTab.candidateName;
-        string previousTabName = activeTab.shortName;
-        ActivateTab("follow up", candidate);
+        SwitchTab("follow up", candidate);
     }
     public void HandleDepthTab(float factor)
     {
