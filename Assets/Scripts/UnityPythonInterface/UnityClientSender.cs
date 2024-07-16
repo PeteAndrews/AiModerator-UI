@@ -84,11 +84,25 @@ public class UnityClientSender : MonoBehaviour
 
     private void SendEvent(string jsonData)
     {
-        using (var requestSocket = new RequestSocket(">tcp://localhost:5556"))
+        try
         {
-            requestSocket.SendFrame(jsonData);
-            string message = requestSocket.ReceiveFrameString();
+            //using (var requestSocket = new RequestSocket(">tcp://10.0.0.7:8989"))
+            //using (var requestSocket = new RequestSocket("tcp://localhost:5556"))
+            using (var requestSocket = new RequestSocket($">tcp://{NetworkSettings.Instance.serverIP}:{NetworkSettings.Instance.repPort}"))
+            {
+                requestSocket.SendFrame(jsonData);
+                string message = requestSocket.ReceiveFrameString();
+            }
         }
+        catch (NetMQException ex)
+        {
+            Debug.LogError("NetMQException: " + ex);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("Exception: " + ex);
+        }
+
     }
 
     private void HandleEvent(EventData eventData)

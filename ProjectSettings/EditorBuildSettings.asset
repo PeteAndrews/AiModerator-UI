@@ -6,6 +6,27 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: 67a84d3ff17844d4f85d055dde86d9f6
+  - enabled: 1
+    path: Assets/Scenes/Interactive Race & Immigration.unity
+    guid: 9bfd5c4021117ee42b700e6d3c20d8de
+  - enabled: 1
+    path: Assets/Scenes/Interactive National Security.unity
+    guid: 6e4f7f9d6bd86d04fb53201ca44b6a4b
+  - enabled: 1
+    path: Assets/Scenes/Walkthrough.unity
+    guid: d07d35716d6dcff4a8e6fb95811b20bd
+  - enabled: 1
+    path: Assets/Scenes/Video National Security.unity
+    guid: 795f9617b5481b84983f98a854ce094f
+  - enabled: 1
+    path: Assets/Scenes/Video Race & Immigration.unity
+    guid: 9ddb355887325424fb02b8e3b52ba3aa
+  - enabled: 0
+    path: Assets/Scenes/AiM_Scene_003_Race.unity
+    guid: 8198dae1c4710e843a4ca762378a7a90
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}

@@ -11,8 +11,7 @@ using System.Text;
 using System.Collections;
 
 public class CuiManager : MonoBehaviour
-{
-    public static CuiManager Instance { get; private set; }
+{    public static CuiManager Instance { get; private set; }
     public UserController userController;
     public HeadlineBanner headlineBanner;
     private void Awake()
@@ -77,6 +76,7 @@ public class CuiManager : MonoBehaviour
         yield return new WaitUntil(() => haveImage);
         headlineBanner.ActivateBanner(bannerImages, currentEventData.Summary);
         functionButtonManager.ActivateFunctionButtons(eventData.Candidate);
+
         bannerImages = null;
         haveImage = false;
     }

@@ -1,11 +1,9 @@
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Video;
 
 [System.Serializable]
 public class EventData
@@ -33,7 +31,6 @@ public class EventData
     {
         return JsonConvert.SerializeObject(this);
     }
-
 }
 
 [System.Serializable]
@@ -51,10 +48,8 @@ public class DialogueEventLoader : MonoBehaviour
     public string dialogueEventPath;
     private Dictionary<float, EventData> eventsDictionary = new Dictionary<float, EventData>();
     private List<float> sortedEventTimes;
-   
     protected GlobalTimer globalTimer;
     public EventData currentEventData;
-
 
     private void Awake()
     {
@@ -72,7 +67,6 @@ public class DialogueEventLoader : MonoBehaviour
         {
             Debug.LogError("globalTimer is null in DialogueEventLoader Awake()");
         }
-
     }
 
     void Start()
@@ -80,12 +74,11 @@ public class DialogueEventLoader : MonoBehaviour
         LoadEventData();
         sortedEventTimes = eventsDictionary.Keys.OrderBy(t => t).ToList();
         StartCoroutine(CheckEventsCoroutine());
-
     }
 
     private IEnumerator CheckEventsCoroutine()
     {
-        while (true) 
+        while (true)
         {
             if (sortedEventTimes.Count > 0 && globalTimer.Time >= sortedEventTimes[0])
             {
@@ -99,16 +92,16 @@ public class DialogueEventLoader : MonoBehaviour
                     sortedEventTimes.RemoveAt(0);
                 }
             }
-            yield return new WaitForSeconds(eventCheckInterval); 
+            yield return new WaitForSeconds(eventCheckInterval);
         }
     }
+
     private void LoadEventData()
     {
-        string filePath = Path.Combine(Application.dataPath, dialogueEventPath);
-        if (File.Exists(filePath))
+        TextAsset jsonData = Resources.Load<TextAsset>(dialogueEventPath.TrimStart('/'));
+        if (jsonData != null)
         {
-            string dataAsJson = File.ReadAllText(filePath);
-            EventList loadedData = JsonUtility.FromJson<EventList>("{\"events\":" + dataAsJson + "}");
+            EventList loadedData = JsonUtility.FromJson<EventList>("{\"events\":" + jsonData.text + "}");
             foreach (var eventData in loadedData.events)
             {
                 float time = ConvertTimeStringToSeconds(eventData.Time);
@@ -117,27 +110,19 @@ public class DialogueEventLoader : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Cannot find file!");
+            Debug.LogError("Failed to load JSON data from Resources.");
         }
     }
 
-    private EventData GetEventData(float timestamp)
-    {
-        if (eventsDictionary.ContainsKey(timestamp))
-        {
-            return eventsDictionary[timestamp];
-        }
-        return null; 
-    }
     private float ConvertTimeStringToSeconds(string timeStr)
     {
         string[] parts = timeStr.Split(':', ',');
-        if (parts.Length < 3) return -1; 
+        if (parts.Length < 3) return -1;
 
         int hours = int.Parse(parts[0]);
         int minutes = int.Parse(parts[1]);
         int seconds = int.Parse(parts[2]);
-        int milliseconds = int.Parse(parts[3]);
+        int milliseconds = parts.Length > 3 ? int.Parse(parts[3]) : 0;
 
         float totalSeconds = (hours * 3600) + (minutes * 60) + seconds + (milliseconds / 1000f);
         return totalSeconds;

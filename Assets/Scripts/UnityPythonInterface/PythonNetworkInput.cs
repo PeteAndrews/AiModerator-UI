@@ -6,10 +6,9 @@ using NetMQ;
 using System;
 using AsyncIO;
 using Newtonsoft.Json;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Linq;
 using NetMQ.Sockets;
+using TMPro;
 
 [Serializable]
 public class PythonServerDataContainer
@@ -50,7 +49,6 @@ public class RetrievePushData
     {
         thread = new Thread(ThreadFunction);
     }
-
     private void ThreadFunction(object callbackObject)
     {
         Action<PythonServerDataContainer> callback = callbackObject as Action<PythonServerDataContainer>;
@@ -61,7 +59,9 @@ public class RetrievePushData
 
         using (var socket = new PullSocket())
         {
-            socket.Connect("tcp://localhost:5555");
+            //socket.Connect(f"tcp://{10.0.0.7}:{8888}");
+            //socket.Connect("tcp://localhost:5555");
+            socket.Connect($"tcp://{NetworkSettings.Instance.serverIP}:{NetworkSettings.Instance.pushPort}");
             try
             {
                 while (streaming)
@@ -71,7 +71,6 @@ public class RetrievePushData
                     {
                         var input = msg[0].ConvertToString(); 
                         PythonServerDataContainer data = JsonConvert.DeserializeObject<PythonServerDataContainer>(input);
-
                         if (msg.Count() > 1)
                         {
                             List<byte[]> images = new List<byte[]>();
@@ -109,15 +108,13 @@ public class RetrievePushData
             texture.LoadImage(image); 
             textures.Add(texture);
         }
-        System.IO.File.WriteAllBytes("test_output_image.png", images[0]);
-
         return textures;
     }
 
-
     private void HandleInputEvent(PythonServerDataContainer data)
     {
-        switch(data.eventName)
+
+        switch (data.eventName)
         {
             case "More Info Response Event":
                 MainThreadDispatcher.Enqueue(() => OnMoreInfoResponseEvent?.Invoke(data.eventName, data.eventData));

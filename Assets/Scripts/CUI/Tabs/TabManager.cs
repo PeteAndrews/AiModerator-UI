@@ -1,14 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Web;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
-using UnityEngine.WSA;
+
 
 [System.Serializable]
 public class TabPosition
