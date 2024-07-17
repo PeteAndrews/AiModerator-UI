@@ -231,11 +231,15 @@ public class WaitServerState : ITabState
     }
 
     public void UpdateState(Tab context)
-    {
-        if (context.HasReceivedServerResponse)
-        {
-            context.TransitionToNextState();
-        }
+    {   
+        // Qingyuan: commented to mock the server response
+        // if (context.HasReceivedServerResponse)
+        // {
+        //     context.TransitionToNextState();
+        // }
+        context.HasReceivedServerResponse = true;
+        context.TransitionToNextState();
+        Debug.Log("Transitioning to next state");
     }
     public void HandleTransition(Tab context)
     {

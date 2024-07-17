@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using Transform = System.Security.Cryptography.Xml.Transform;
 
 public class FunctionButton : MonoBehaviour
 {
@@ -18,8 +19,13 @@ public class FunctionButton : MonoBehaviour
     public Color activeColour;
     public Color inactiveColour;
     public Color selectedColour;
-
-
+    
+    // Qingyuan: for testing the button
+    public GameObject CuiMessagePrefabTrump;
+    public GameObject CuiMessagePrefabBiden;
+    public Transform cuiMessageParentTrump;
+    public Transform cuiMessageParentBiden;
+    
     private void Awake()
     {
         buttonImage = GetComponent<Image>();
@@ -41,12 +47,32 @@ public class FunctionButton : MonoBehaviour
         {
             Debug.LogError("Button component not found on the object!");
         }
+        
+        // Qingyuan: for testing the button, activate it on start
+        Activate();
     }
     private void OnSelect()
     {
         button.interactable = false;
         ChangeButtonColour(selectedColour);
         Debug.Log("Button Clicked");
+        
+        //Qingyuan: for testing the button, instantiate a speech bubble CuiMessage prefab
+        if (transform.parent.name == "FunctionButtonsParent-Trump")
+        {
+            GameObject cuiTrump = Instantiate(CuiMessagePrefabTrump, transform.position, Quaternion.identity);
+            CuiMessage cuiMessage = cuiTrump.GetComponent<CuiMessage>();
+            cuiMessage.mainText.text = "Trump: test CuiMessage";
+            //cuiMessage.transform.SetParent(cuiMessageParentTrump, false);
+        }
+        else if (transform.parent.name == "FunctionButtonsParent-Biden")
+        {
+            GameObject cuiBiden = Instantiate(CuiMessagePrefabBiden, transform.position, Quaternion.identity);
+            CuiMessage cuiMessage = cuiBiden.GetComponent<CuiMessage>();
+            cuiMessage.mainText.text = "Biden: test CuiMessage";
+            //cuiMessage.transform.SetParent(cuiMessageParentBiden, false);
+            
+        }
     }
     private void ChangeButtonColour(Color colour)
     {
