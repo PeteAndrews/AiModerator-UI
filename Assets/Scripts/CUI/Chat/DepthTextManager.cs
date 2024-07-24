@@ -6,9 +6,9 @@ using UnityEngine;
 public class DepthTextManager : MonoBehaviour
 {
     private Dictionary<DetailLevel, string> currentText = new Dictionary<DetailLevel, string>();
-    private float zoomFactor = 0.0f;
+    private float factorLow = 0.75f;
+    private float factorMid = 1.0f;
 
-    
 
     public enum DetailLevel
     {
@@ -43,9 +43,10 @@ public class DepthTextManager : MonoBehaviour
 
     public void UpdateTextDepthLevel(float factor)
     {
-        if (factor < 0.33)
+        Debug.Log($"Factor: {factor}");
+        if (factor < factorLow)
             PublishText(currentText[DetailLevel.Brief].ToString());
-        else if (factor < 0.66)
+        else if (factor < factorMid)
             PublishText(currentText[DetailLevel.Moderate].ToString());
         else
             PublishText(currentText[DetailLevel.Detailed].ToString());

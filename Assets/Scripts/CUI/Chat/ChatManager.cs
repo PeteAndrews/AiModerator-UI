@@ -10,6 +10,18 @@ using UnityEngine.TextCore.Text;
 using Unity.VisualScripting;
 using System.Linq;
 
+
+public class OpinionPollData
+{
+    public Dictionary<string, string> Options { get; set; }
+    public string HeaderText { get; set; }
+    public OpinionPollData(Dictionary<string, string> options, string headerText)
+    {
+        Options = options;
+        HeaderText = headerText;
+    }
+}
+
 public static class TimeHelper
 {
     public static string CurrentTime => DateTime.Now.ToString("HH:mm:ss");
@@ -39,11 +51,11 @@ public class HyperLinkConverter
             if (string.IsNullOrEmpty(trimmedElement))
                 continue;
 
-            stringBuilder.Append($"<link=\"{linkId}\"><color=#FF0000>{trimmedElement}</color></link>");
+            stringBuilder.Append($"<link=\"{linkId}\"><color=#FFFDB7>{trimmedElement}</color></link>");
             stringBuilder.AppendLine();
         }
 
-        stringBuilder.Append(" for more info.");
+        //stringBuilder.Append(" for more info.");
         return stringBuilder.ToString();
     }
     private string ConvertByCommas(string input, ref string linkId)
@@ -57,7 +69,7 @@ public class HyperLinkConverter
             if (string.IsNullOrEmpty(trimmedElement))
                 continue;
 
-            stringBuilder.Append($"<link=\"{linkId}\"><color=#0000FF>{trimmedElement}</color></link>");
+            stringBuilder.Append($"<link=\"{linkId}\"><color=#FFFDB7>{trimmedElement}</color></link>");
             stringBuilder.Append(" and ");
         }
 
@@ -81,7 +93,7 @@ public class HyperLinkConverter
             if (string.IsNullOrEmpty(trimmedElement))
                 continue;
 
-            stringBuilder.Append($"<link=\"{linkId}\"><color=#FFFEC5>{trimmedElement}</color></link>");
+            stringBuilder.Append($"<link=\"{linkId}\"><color=#FFFDB7>{trimmedElement}</color></link>");
             stringBuilder.AppendLine();
         }
         stringBuilder.Append(" for more info.");
@@ -92,6 +104,7 @@ public class ChatManager : MonoBehaviour
 {
     private List<string> validOptions = new List<string> { "fact check", "polarity", "more info", "continue, manifesto" };
     private HyperLinkConverter hyperLinkConverter = new HyperLinkConverter();
+    public OpinionPollData opinionPollData;
     private void ResizeTextCollider()
     {
         AdjustColliderToText adjustCollider = TabManager.Instance.activeTab.tabInstance.GetComponent<AdjustColliderToText>();
@@ -100,24 +113,26 @@ public class ChatManager : MonoBehaviour
     public void AddInteractivePollMessage(string text)
     {
         Dictionary<string, string> dictionary = new Dictionary<string, string>();
-        string[] textList = text.Split('\n');
+        string[] delimiters = new string[] { "\\n", "\n" };
+        string[] textList = text.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
         string headText = textList[0];
-        textList = textList.Skip(2).ToArray();
+        textList = textList.Skip(1).ToArray();
         string[] cleanTextList = new string[4];
 
         for (int i =0; i< 4; i++)
         {
             string[] elements = textList[i].Split('[');
             string value = elements[1].Replace("]", "");
-            dictionary.Add(elements[0], value);
+            dictionary.Add(elements[0].Trim(), value.Trim());
             cleanTextList[i] = elements[0];
         }
 
         string combinedText = string.Join("\n", cleanTextList);
         string hyperLinkText = hyperLinkConverter.Convert(combinedText, "opinion");
         headText = AstrixToBold(headText);
+        opinionPollData = new OpinionPollData(dictionary, headText);
         combinedText = headText + "\n" + hyperLinkText;
-        AddInteractiveHyperLinkMessage(combinedText);
+        AddInteractiveHyperLinkMessage(combinedText, removeProceeding:false);
 
     }
     public void AddInteractiveMessage(string text, string functionName)
@@ -129,12 +144,16 @@ public class ChatManager : MonoBehaviour
         AddInteractiveHyperLinkMessage(text);
     }
 
-    public void AddInteractiveHyperLinkMessage(string mainText)
+    public void AddInteractiveHyperLinkMessage(string mainText, bool removeProceeding=true)
     {
 
         CuiMessage message = TabManager.Instance.activeTab.tabInstance.GetComponent<CuiMessage>();
         mainText = AstrixToBold(mainText);
-        mainText = RemovePreceeding(mainText, ":");
+        if (removeProceeding)
+        {
+            mainText = RemovePreceeding(mainText, ":");
+        }
+        
 
         if (message == null || message.timeText == null || message.mainText == null)
         {

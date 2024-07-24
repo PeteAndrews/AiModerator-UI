@@ -6,25 +6,26 @@ using Newtonsoft.Json;
 public class FrameJsonLoader : MonoBehaviour
 {
     
-    public string jsonFolderPath = "Assets/data/track_data";
+    public string jsonFolderPath = "/track_data/security/";
 
-    void Update()
-    {
-    }
-    
-    
     public FrameData LoadFrameData(int frameNumber)
     {
-        string frameNumberString = frameNumber.ToString("D6");
-        string jsonFilePath = Path.Combine(jsonFolderPath, "frame_" + frameNumberString + ".json");
-        if (File.Exists(jsonFilePath))
-        {
-            string json = File.ReadAllText(jsonFilePath);
-            FrameData frameData = JsonConvert.DeserializeObject<FrameData>(json);
-            return frameData;
-        }
-        
-        return null;
-        
-    }
+       string frameNumberString = frameNumber.ToString("D6");
+       //string jsonFilePath = Path.Combine(jsonFolderPath, "frame_" + frameNumberString + ".json");
+       string jsonFilePath = Path.Combine(jsonFolderPath, "frame_" + frameNumberString);
+       TextAsset jsonData = Resources.Load<TextAsset>(jsonFilePath.TrimStart('/'));
+       if (jsonData != null)
+       {
+           //FrameData frameData = JsonUtility.FromJson<FrameData>(jsonData.text);
+           FrameData frameData = JsonConvert.DeserializeObject<FrameData>(jsonData.text);
+
+           return frameData;
+       }
+
+       else
+       {
+            return null;
+       }
+     }
+
 }

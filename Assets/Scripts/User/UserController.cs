@@ -1,3 +1,4 @@
+using TMPro;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 
@@ -24,7 +25,7 @@ public class UserController : MonoBehaviour
     private int tapCount = 0;
     private float lastTapTime = 0;
     private float doubleTapTime = 0.3f; // Maximum time interval between taps
-    public float pinchSensitivity = 500.0f; // Sensitivity of the pinch gesture
+    public float pinchSensitivity = 800f; // Sensitivity of the pinch gesture   /500?
 
     // Variables for pinch detection
     private float initialPinchDistance;
@@ -39,10 +40,15 @@ public class UserController : MonoBehaviour
     public event SingleTapEventHandler OnSingleTapEvent;
     public delegate void PinchZoomEventHandler(float factor);
     public event PinchZoomEventHandler OnPinchZoomEvent;
-
+    private float tapCooldown = 0.2f; // 200 milliseconds
+    public TextMeshProUGUI textPinchFactor;
+    private float clampMin = 0.5f;
+    private float clampMax = 2.0f;
     private void Start()
     {
         SetTouchInteractionEnabled(false);
+        lastTapTime = -tapCooldown; // Ensures the first tap is processed.
+
     }
 
     void Update()
@@ -81,12 +87,12 @@ public class UserController : MonoBehaviour
     }
     private void HandleSimulatedPinch(float scrollDelta)
     {
-        simulatedPinchDistance += scrollDelta * 300;
+        simulatedPinchDistance += scrollDelta * 500;
 
-        simulatedPinchDistance = Mathf.Clamp(simulatedPinchDistance, 10, 100); 
+        simulatedPinchDistance = Mathf.Clamp(simulatedPinchDistance, 50, 200);
 
-        float zoomFactor = (simulatedPinchDistance - 10) / (100 - 10);
-
+        //float zoomFactor = (simulatedPinchDistance - 50) / (200 - 50);
+        float zoomFactor = (simulatedPinchDistance - 50) / 100;
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         HandlePinchZoom(mousePos, zoomFactor);
     }
@@ -100,7 +106,8 @@ public class UserController : MonoBehaviour
     private void ProcessInput(Vector2 position, TouchPhase phase)
     {
         Vector2 touchPosWorld = ScreenToWorld(position);
-        RaycastHit2D hitInformation = Physics2D.Raycast(touchPosWorld, Vector2.zero);
+        //RaycastHit2D hitInformation = Physics2D.Raycast(touchPosWorld, Vector2.zero);
+        RaycastHit2D hitInformation = Physics2D.Raycast(touchPosWorld, Vector2.down, 10f);
 
         switch (phase)
         {
@@ -115,18 +122,77 @@ public class UserController : MonoBehaviour
                 break;
         }
     }
-    private void HandleTouchInput()
+
+    /*
+private void HandleTouchInput()
     {
         if (Input.touchCount == 1)
         {
-            Touch touch = Input.GetTouch(0);
-            ProcessInput(touch.position, touch.phase);
+            if (isPinching)
+            {
+                Touch touch = Input.GetTouch(0);
+                ProcessInput(touch.position, touch.phase);
+            }
+
         }
         else if (Input.touchCount > 1)
         {
             HandlePinch();
+            isSwipe = false;
+        }
+    }*/
+    private void HandleTouchInput()
+    {
+        if (Input.touchCount == 1)
+        {
+            // Allow single touch inputs to be processed normally if not pinching
+            if (!isPinching)
+            {
+                Touch touch = Input.GetTouch(0);
+                ProcessInput(touch.position, touch.phase);
+            }
+        }
+        else if (Input.touchCount > 1)
+        {
+            HandlePinch();
+            isSwipe = false; // Prevent swipe detection during pinch
+        }
+        else
+        {
+            // Reset flags when no touches or unexpected touch patterns
+            isPinching = false;
+            isSwipe = false;
         }
     }
+    private void HandlePinch()
+    {
+        Touch touch0 = Input.GetTouch(0);
+        Touch touch1 = Input.GetTouch(1);
+
+        if (!isPinching)
+        {
+            initialPinchDistance = Vector2.Distance(touch0.position, touch1.position);
+            isPinching = true;
+        }
+        else if ((touch0.phase == TouchPhase.Moved || touch1.phase == TouchPhase.Moved) && isPinching)
+        {
+            var currentPinchDistance = Vector2.Distance(touch0.position, touch1.position);
+            var pinchChange = currentPinchDistance - initialPinchDistance;
+            var factor = 1 + pinchChange / pinchSensitivity;
+            factor = Mathf.Clamp(factor, clampMin, clampMax);
+
+            HandlePinchZoom(initialPinchCenter, factor);
+            // Optionally update initialPinchDistance here only under certain conditions
+        }
+        else if (touch0.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Ended)
+        {
+            isPinching = false;
+            isSwipe = false;
+
+        }
+
+    }
+    /*
     private void HandlePinch()
     {
         Touch touch0 = Input.GetTouch(0);
@@ -142,8 +208,8 @@ public class UserController : MonoBehaviour
         {
             var currentPinchDistance = Vector2.Distance(touch0.position, touch1.position);
             var pinchChange = currentPinchDistance - initialPinchDistance;
-            var factor = 1 + pinchChange / (pinchSensitivity); 
-            factor = Mathf.Clamp(factor, 0f, 1f); 
+            var factor = 1 + pinchChange / (pinchSensitivity);
+            factor = Mathf.Clamp(factor, NetworkSettings.Instance.clampMin, NetworkSettings.Instance.clampMax); 
 
             HandlePinchZoom(initialPinchCenter, factor);
             initialPinchDistance = currentPinchDistance;
@@ -152,6 +218,12 @@ public class UserController : MonoBehaviour
         {
             isPinching = false;
         }
+    }*/
+    private void HandlePinchZoom(Vector2 center, float factor)
+    {
+        textPinchFactor.text = factor.ToString();
+        Debug.Log("Pinch Zoom at: " + center + " with scale factor: " + factor);
+        OnPinchZoomEvent?.Invoke(factor);
     }
     private void HandleTouchBegan(Vector2 position, RaycastHit2D hitInformation)
     {
@@ -197,11 +269,7 @@ public class UserController : MonoBehaviour
             HandleTap(touchEnd, hitInformation);
         }
     }
-    private void HandlePinchZoom(Vector2 center, float factor)
-    {
-        Debug.Log("Pinch Zoom at: " + center + " with scale factor: " + factor);
-        OnPinchZoomEvent?.Invoke(factor);
-    }
+
     private void HandleSwipe(Vector2 start, Vector2 end, string hitGameObjectName)
     {
         Vector2 direction = end - start;
@@ -226,11 +294,17 @@ public class UserController : MonoBehaviour
             }
         }
     }
+   
     private void HandleTap(Vector2 position, RaycastHit2D hitInformation)
     {
         Debug.Log("Tap Detected at: " + position);
         if (hitInformation.collider != null)
         {
+            string gameObjectName = hitInformation.collider.gameObject.name;
+            string gameObjectTag = hitInformation.collider.gameObject.tag;
+
+            Debug.Log($"Tap processed on GameObject: {gameObjectName}, Tag: {gameObjectTag}");
+
             if (hitInformation.collider.CompareTag("FunctionButton"))
             {
                 Debug.Log("Button was tapped.");

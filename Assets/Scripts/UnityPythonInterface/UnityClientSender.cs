@@ -26,7 +26,7 @@ public class UnityClientSender : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
             Debug.Log("Set as singleton instance: " + GetInstanceID());
         }
         else

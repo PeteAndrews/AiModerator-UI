@@ -268,6 +268,19 @@ public class FunctionButtonManager : MonoBehaviour
 
         ForceButtonsToOrigin();
     }
+    public void ToggleFunctionButtonsInteractions(bool isInteractive)
+    {
+        string activeTabName = TabManager.Instance.activeTab?.shortName;
+        string candidateName = TabManager.Instance.activeTab?.candidateName;
+        if (buttonContainers.TryGetValue(candidateName, out var buttons))
+        {
+            foreach (FunctionButton button in buttons)
+            {
+                button.button.interactable = isInteractive;
+            }
+        }
+    }
+
     private void CheckAndHandleTrailingFlag()
     {
         if (flagTrailing)

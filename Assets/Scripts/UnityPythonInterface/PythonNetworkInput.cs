@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Linq;
 using NetMQ.Sockets;
 using TMPro;
+using UnityEngine.Windows;
 
 [Serializable]
 public class PythonServerDataContainer
@@ -19,6 +20,7 @@ public class PythonServerDataContainer
     public string functionName;
     public bool isHyperText=false;
     public List<byte[]> imageData;
+    public string imageNames;
 }
 
 public class RetrievePushData
@@ -42,7 +44,7 @@ public class RetrievePushData
     public event MoreInfoResponseHandler OnMoreInfoResponseEvent;
     public delegate void SetEventHandler();
     public event SetEventHandler OnSetEvent;
-    public delegate void ImageReceivedHandler(List<Texture2D> texture);
+    public delegate void ImageReceivedHandler(List<Texture2D> texture, List<string> imageNames);
     public event ImageReceivedHandler OnImageReceieved; 
 
     public RetrievePushData()
@@ -129,7 +131,10 @@ public class RetrievePushData
                 MainThreadDispatcher.Enqueue(() =>
                 {
                     List<Texture2D> textures = HandleBytesToTexture(data.imageData);
-                    OnImageReceieved?.Invoke(textures); 
+                    List<string> imageNames = data.imageNames.Split(',')
+                           .Select(name => name.Trim())
+                           .ToList();
+                    OnImageReceieved?.Invoke(textures, imageNames); 
                 });
                 break;
             default:

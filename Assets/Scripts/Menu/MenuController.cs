@@ -10,6 +10,8 @@ public class MenuController : MonoBehaviour
     public TMP_InputField pushPortInputField;
     public TMP_Dropdown sceneDropdown;
 
+
+
     void Start()
     {
         PopulateDropdown();
@@ -20,7 +22,8 @@ public class MenuController : MonoBehaviour
         sceneDropdown.options.Clear();
         sceneDropdown.options.Add(new TMP_Dropdown.OptionData("Please Select")); // Default prompt
         List<string> scenes = new List<string> { "Walkthrough", "Video National Security", "Video Race & Immigration", 
-                                                    "Interactive National Security", "Interactive Race & Immigration" };
+                                                    "Interactive National Security", "Interactive Race & Immigration",
+                                                "Playground  National Security 1"};
         foreach (string scene in scenes)
         {
             sceneDropdown.options.Add(new TMP_Dropdown.OptionData(scene));

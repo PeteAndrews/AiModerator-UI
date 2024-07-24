@@ -8,6 +8,11 @@ public class NetworkSettings : MonoBehaviour
     public string serverIP;
     public int repPort;
     public int pushPort;
+    public float pinchSenitivity;
+    public float clampMin;
+    public float clampMax;
+    public float factorLow;
+    public float factorMid;
 
     void Awake()
     {

@@ -18,7 +18,7 @@ public class TabManager: MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -123,7 +123,12 @@ public class TabManager: MonoBehaviour
     }
     public void HandleReactTab()
     {
-       throw new NotImplementedException();
+        EmojiBar emojiBar = activeTab.tabInstance.GetComponent<CuiMessage>().emojiBar;
+        if (emojiBar != null)
+        {
+            emojiBar.ActivateReactBar();
+        }
+
     }
     public void HandleFollowUpTab()
     {
@@ -131,9 +136,14 @@ public class TabManager: MonoBehaviour
         string candidate = activeTab.candidateName;
         SwitchTab("follow up", candidate);
     }
-    public void HandleDepthTab(float factor)
+    public void OnReactDisable()
     {
+        EmojiBar emojiBar = activeTab.tabInstance.GetComponent<CuiMessage>().emojiBar;
+        if (emojiBar!=null)
+        {
+            Destroy(emojiBar.gameObject);
 
+        }
     }
     public void DestroyActiveTab()
     {

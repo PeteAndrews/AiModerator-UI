@@ -13,7 +13,7 @@ public class FunctionButton : MonoBehaviour
         {"FunctionButtonsParent-Biden(Clone)", "Biden"}
     };
 
-    private Button button;
+    public Button button;
     private Image buttonImage;  
     public string candidateName;
 

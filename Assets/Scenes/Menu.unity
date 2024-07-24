@@ -1865,6 +1865,11 @@ MonoBehaviour:
   serverIP: 10.0.0.7
   repPort: 0
   pushPort: 0
+  pinchSenitivity: 0
+  clampMin: 0
+  clampMax: 0
+  factorLow: 0
+  factorMid: 0
 --- !u!4 &773747590
 Transform:
   m_ObjectHideFlags: 0

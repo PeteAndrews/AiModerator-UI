@@ -21,6 +21,8 @@ public class Tab : MonoBehaviour
     public bool HasReceivedServerResponse { get; set; }
     public string serverResponse { get; set; }
     public bool UserHasInteracted { get; set; }
+    public bool inPollEvent { get; set; }
+    public string pollData { get; set; }    
 
 
     private void OnEnable()
@@ -160,6 +162,7 @@ public class OpinionTab : Tab
             new WaitServerState(),
             new PublishState(new OpinionPublishBehaviour()),
             new WaitUserSelectionState(),
+            new OnPollEventState(),
             new TerminateState() 
         };
         SetStateSequence(states);

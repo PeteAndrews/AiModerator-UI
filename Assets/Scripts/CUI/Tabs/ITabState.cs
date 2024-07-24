@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public interface IActivationBehavior
 {
     void Activate(Tab context, string previousResponse=null);
@@ -227,13 +226,21 @@ public class PublishState : ITabState
 
 public class WaitServerState : ITabState
 {
+
     public void EnterState(Tab context)
     {
+        CuiManager.Instance.ToggleFunctionButtonsInteraction(false);
+        CuiManager.Instance.PublishToChat("", false);
+        CuiManager.Instance.InstantiateWaitAnimation();
     }
 
     public void ExitState(Tab context)
     {
-        context.HasReceivedServerResponse = false; 
+        context.HasReceivedServerResponse = false;
+        CuiManager.Instance.PublishToChat("", false);
+        CuiManager.Instance.DestroyWaitAnimation();
+        CuiManager.Instance.ToggleFunctionButtonsInteraction(true);
+
     }
 
     public void UpdateState(Tab context)
@@ -242,6 +249,7 @@ public class WaitServerState : ITabState
         {
             context.TransitionToNextState();
         }
+
     }
     public void HandleTransition(Tab context)
     {
@@ -249,7 +257,69 @@ public class WaitServerState : ITabState
     }
 }
 
+public class OnPollEventState : ITabState
+{
+    private Tab context; // Keep a reference to the context if needed in the HandleInteractionEvent
 
+    public void EnterState(Tab context)
+    {
+        this.context = context; // Store the context
+        context.inPollEvent = true;
+        CuiManager.Instance.InstantiatePoll();
+        UserController.Instance.OnDoubleTapEvent += HandleInteractionEvent;
+        UserController.Instance.OnSingleTapEvent += HandleInteractionEvent;
+        UserController.Instance.OnPinchZoomEvent += HandleInteractionEvent;
+        UserController.Instance.OnSwipeEvent += HandleInteractionEvent;
+        context.EnableAdvancedFeatures();
+
+    }
+
+    public void ExitState(Tab context)
+    {
+        // Ensure that the event is unregistered to avoid memory leaks and unintended behavior
+        UserController.Instance.OnDoubleTapEvent -= HandleInteractionEvent;
+        UserController.Instance.OnSingleTapEvent -= HandleInteractionEvent;
+        UserController.Instance.OnPinchZoomEvent -= HandleInteractionEvent;
+        UserController.Instance.OnSwipeEvent -= HandleInteractionEvent;
+        context.inPollEvent = false;
+        CuiManager.Instance.DestroyPoll();
+        CuiManager.Instance.DeactivateFunctionButton();
+        context.EnableBasicFeatures();
+    }
+
+    public void HandleTransition(Tab context)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void UpdateState(Tab context)
+    {
+        if (!context.inPollEvent)
+        {
+            context.TransitionToNextState();
+        }
+    }
+    private void HandleInteractionEvent()
+    {
+        SetInteractionComplete();
+    }
+
+    private void HandleInteractionEvent(float num)
+    {
+        SetInteractionComplete();
+    }
+
+    private void HandleInteractionEvent(string dir)
+    {
+        SetInteractionComplete();
+    }
+
+    private void SetInteractionComplete()
+    {
+        if (context != null)
+            context.inPollEvent = false;
+    }
+}
 
 public class WaitUserSelectionState : ITabState
 {
@@ -291,6 +361,9 @@ public class WaitUserSelectionState : ITabState
     private void HandleOpinionSelected(string linkText)
     {
         userHasSelected = true;
+        CuiManager.Instance.pollSelection = linkText;
+        //STORE THE TEXT WITH THE LINKED NAME, MAY
+
         //throw new NotImplementedException();
         // Instantiate poll
     }

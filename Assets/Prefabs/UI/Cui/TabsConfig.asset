@@ -16,84 +16,84 @@ MonoBehaviour:
   - tabName: tab-factCheck-trump
     shortName: fact check
     candidateName: trump
-    tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
+    tabPrefab: {fileID: 6838016893513455993, guid: 7dc20ad2d581f814595c049dc2c62245, type: 3}
     positionName: first
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-polarity-trump
     shortName: polarity
     candidateName: trump
-    tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
+    tabPrefab: {fileID: 6838016893513455993, guid: 7dc20ad2d581f814595c049dc2c62245, type: 3}
     positionName: second
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-moreInfo-trump
     shortName: more info
     candidateName: trump
-    tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
+    tabPrefab: {fileID: 6838016893513455993, guid: 7dc20ad2d581f814595c049dc2c62245, type: 3}
     positionName: third
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-manifesto-trump
     shortName: manifesto
     candidateName: trump
-    tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
+    tabPrefab: {fileID: 6838016893513455993, guid: 7dc20ad2d581f814595c049dc2c62245, type: 3}
     positionName: fourth
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-opinion-trump
     shortName: opinion
     candidateName: trump
-    tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
+    tabPrefab: {fileID: 6838016893513455993, guid: 7dc20ad2d581f814595c049dc2c62245, type: 3}
     positionName: fifth
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-followup-trump
     shortName: follow up
     candidateName: trump
-    tabPrefab: {fileID: 5887814937710585475, guid: 76b9fca3faa089240adf4c44e570313e, type: 3}
+    tabPrefab: {fileID: 6838016893513455993, guid: 7dc20ad2d581f814595c049dc2c62245, type: 3}
     positionName: sixth
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-factCheck-biden
     shortName: fact check
     candidateName: biden
-    tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
+    tabPrefab: {fileID: 4908525079744507090, guid: c6d71635d524ad343a1ea0f28a2b85ba, type: 3}
     positionName: first
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-polarity-biden
     shortName: polarity
     candidateName: biden
-    tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
+    tabPrefab: {fileID: 4908525079744507090, guid: c6d71635d524ad343a1ea0f28a2b85ba, type: 3}
     positionName: second
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-moreInfo-biden
     shortName: more info
     candidateName: biden
-    tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
+    tabPrefab: {fileID: 4908525079744507090, guid: c6d71635d524ad343a1ea0f28a2b85ba, type: 3}
     positionName: third
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-manifesto-biden
     shortName: manifesto
     candidateName: biden
-    tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
+    tabPrefab: {fileID: 4908525079744507090, guid: c6d71635d524ad343a1ea0f28a2b85ba, type: 3}
     positionName: fourth
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-opinion-biden
     shortName: opinion
     candidateName: biden
-    tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
+    tabPrefab: {fileID: 4908525079744507090, guid: c6d71635d524ad343a1ea0f28a2b85ba, type: 3}
     positionName: fifth
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
   - tabName: tab-followup-biden
     shortName: followup
     candidateName: biden
-    tabPrefab: {fileID: 5887814937710585475, guid: e27e7db225b0d6740b8b4be9f672af11, type: 3}
+    tabPrefab: {fileID: 4908525079744507090, guid: c6d71635d524ad343a1ea0f28a2b85ba, type: 3}
     positionName: sixth
     tabPosition: {fileID: 0}
     tabInstance: {fileID: 0}
