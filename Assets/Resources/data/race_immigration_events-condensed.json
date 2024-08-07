@@ -1,7 +1,7 @@
 [
     {
         "Iteration": 1,
-        "Time": "00:00:49,099",
+        "Time": "00:00:41,099",
         "SimilarityScore": 0.6025998592,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Family Separation and Detention Practices(Trump addresses the controversy over the use of cages for detaining children at the border.)",
@@ -21,7 +21,7 @@
     },
     {
         "Iteration": 3,
-        "Time": "00:01:25,099",
+        "Time": "00:01:17,099",
         "SimilarityScore": 0.6029819846,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Family Separation Policy(Biden criticizes the policy of separating children from their parents at the border.)",
@@ -41,7 +41,7 @@
     },
     {
         "Iteration": 5,
-        "Time": "00:02:29,565",
+        "Time": "00:02:21,565",
         "SimilarityScore": 0.6057756543,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Accountability for Immigration Policies(Trump repeatedly questions Biden about who built the cages used for detaining children at the border.)",
@@ -61,7 +61,7 @@
     },
     {
         "Iteration": 7,
-        "Time": "00:03:14,931",
+        "Time": "00:03:06,931",
         "SimilarityScore": 0.5335637927,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Immigration Reform Proposal(Biden commits to a comprehensive immigration reform within his first 100 days in office.)",
@@ -81,7 +81,7 @@
     },
     {
         "Iteration": 8,
-        "Time": "00:03:53,830",
+        "Time": "00:03:45,830",
         "SimilarityScore": 0.6085628271,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Contributions of Immigrants and Policy Changes(Biden highlights the contributions of immigrants, especially during the crisis, while Trump defends his administration's policy changes.)",
@@ -101,7 +101,7 @@
     },
     {
         "Iteration": 10,
-        "Time": "00:04:58,063",
+        "Time": "00:04:50,063",
         "SimilarityScore": 0.6224880219,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Critique of Catch and Release Policy(Trump defends the elimination of \"catch and release\" and criticizes Biden's understanding of immigration laws.)",
@@ -121,7 +121,7 @@
     },
     {
         "Iteration": 12,
-        "Time": "00:05:32,796",
+        "Time": "00:05:24,796",
         "SimilarityScore": 0.4707309306,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Critique of Return Rates for Court Cases(Trump makes a controversial statement regarding the intelligence of immigrants returning for court cases.)",
@@ -141,7 +141,7 @@
     },
     {
         "Iteration": 14,
-        "Time": "00:06:34,896",
+        "Time": "00:06:26,896",
         "SimilarityScore": 0.4266458452,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Understanding Racial Fears(Biden acknowledges understanding the fears of parents preparing their children for racial targeting.)",
@@ -161,7 +161,7 @@
     },
     {
         "Iteration": 16,
-        "Time": "00:07:46,195",
+        "Time": "00:07:38,195",
         "SimilarityScore": 0.4221924245,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Institutional Racism and Its Impacts(Biden discusses the pervasive nature of institutional racism and its effects on black Americans, regardless of their economic status.)",
@@ -181,7 +181,7 @@
     },
     {
         "Iteration": 19,
-        "Time": "00:08:56,461",
+        "Time": "00:08:48,461",
         "SimilarityScore": 0.4541060925,
         "IsSimilar": false,
         "ResponseTopic": "Topic: The \"Super Predators\" Comment and 1994 Crime Bill(Trump accuses Biden of labeling young black Americans as \"super predators\" in the context of the 1994 crime bill, suggesting a lasting negative impact on the community.)",
@@ -201,7 +201,7 @@
     },
     {
         "Iteration": 21,
-        "Time": "00:10:04,493",
+        "Time": "00:09:56,493",
         "SimilarityScore": 0.4601465762,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Success of Opportunity Zones and Support for HBCUs(Trump touts the success of Opportunity Zones and his administration's support for historically black colleges and universities (HBCUs), highlighting the benefits to black and Hispanic communities.)",
@@ -221,7 +221,7 @@
     },
     {
         "Iteration": 24,
-        "Time": "00:11:23,126",
+        "Time": "00:11:15,126",
         "SimilarityScore": 0.5399537683,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Central Park Five Case(Biden criticizes Trump's past advocacy for the death penalty in the Central Park Five case, highlighting the racial injustice involved.)",
@@ -241,7 +241,7 @@
     },
     {
         "Iteration": 26,
-        "Time": "00:12:11,326",
+        "Time": "00:12:03,326",
         "SimilarityScore": 0.5374610424,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Criminal Justice Reform Proposals(Biden proposes significant reforms to the criminal justice system, including the elimination of minimum mandatory sentences and the introduction of drug courts.)",

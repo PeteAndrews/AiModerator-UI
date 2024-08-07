@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Interactive National Security.unity
     guid: 6e4f7f9d6bd86d04fb53201ca44b6a4b
   - enabled: 1
-    path: Assets/Scenes/Walkthrough.unity
+    path: Assets/Scenes/Interactive Walkthrough.unity
     guid: d07d35716d6dcff4a8e6fb95811b20bd
   - enabled: 1
     path: Assets/Scenes/Video National Security.unity
@@ -23,6 +23,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Video Race & Immigration.unity
     guid: 9ddb355887325424fb02b8e3b52ba3aa
+  - enabled: 1
+    path: Assets/Scenes/Video Walkthrough.unity
+    guid: eaf22ce974a5d6348bda3baf203c01c8
   - enabled: 1
     path: Assets/Scenes/Playground  National Security 1.unity
     guid: a25d616ed604a8947b1daf9c0d51cf43

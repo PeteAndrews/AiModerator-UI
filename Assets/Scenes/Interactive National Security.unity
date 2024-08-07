@@ -1921,7 +1921,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minimumSwipeDistance: 50
   pinchSensitivity: 500
-  textPinchFactor: {fileID: 0}
 --- !u!4 &1888338861
 Transform:
   m_ObjectHideFlags: 0
@@ -2080,7 +2079,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2075502215}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: f0931572ef0247244810d3cc63b23384, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 3a814d440ab091c4ca6388b0942bdb48, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}

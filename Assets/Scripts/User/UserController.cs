@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
@@ -25,7 +27,7 @@ public class UserController : MonoBehaviour
     private int tapCount = 0;
     private float lastTapTime = 0;
     private float doubleTapTime = 0.3f; // Maximum time interval between taps
-    public float pinchSensitivity = 800f; // Sensitivity of the pinch gesture   /500?
+    public float pinchSensitivity;// = 800f; // Sensitivity of the pinch gesture   /500?
 
     // Variables for pinch detection
     private float initialPinchDistance;
@@ -41,9 +43,12 @@ public class UserController : MonoBehaviour
     public delegate void PinchZoomEventHandler(float factor);
     public event PinchZoomEventHandler OnPinchZoomEvent;
     private float tapCooldown = 0.2f; // 200 milliseconds
-    public TextMeshProUGUI textPinchFactor;
+    //public TextMeshProUGUI textPinchFactor;
     private float clampMin = 0.5f;
     private float clampMax = 2.0f;
+    private bool firstPinchHandled = false;
+    private List<float> initialDistances = new List<float>(); // To buffer initial distances
+
     private void Start()
     {
         SetTouchInteractionEnabled(false);
@@ -54,7 +59,9 @@ public class UserController : MonoBehaviour
     void Update()
     {
 #if UNITY_EDITOR
-        HandleMouseInput();
+        //HandleMouseInput();
+                HandleTouchInput();
+
 #else
         // Handle Touch Input for Deployment
         HandleTouchInput();
@@ -87,12 +94,9 @@ public class UserController : MonoBehaviour
     }
     private void HandleSimulatedPinch(float scrollDelta)
     {
-        simulatedPinchDistance += scrollDelta * 500;
-
+        simulatedPinchDistance += scrollDelta * 250; 
         simulatedPinchDistance = Mathf.Clamp(simulatedPinchDistance, 50, 200);
-
-        //float zoomFactor = (simulatedPinchDistance - 50) / (200 - 50);
-        float zoomFactor = (simulatedPinchDistance - 50) / 100;
+        float zoomFactor = (simulatedPinchDistance - 50) / 150; 
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         HandlePinchZoom(mousePos, zoomFactor);
     }
@@ -164,6 +168,7 @@ private void HandleTouchInput()
             isSwipe = false;
         }
     }
+    /*
     private void HandlePinch()
     {
         Touch touch0 = Input.GetTouch(0);
@@ -178,7 +183,7 @@ private void HandleTouchInput()
         {
             var currentPinchDistance = Vector2.Distance(touch0.position, touch1.position);
             var pinchChange = currentPinchDistance - initialPinchDistance;
-            var factor = 1 + pinchChange / pinchSensitivity;
+            var factor = 1 + pinchChange / NetworkSettings.Instance.pinchSensitivity;
             factor = Mathf.Clamp(factor, clampMin, clampMax);
 
             HandlePinchZoom(initialPinchCenter, factor);
@@ -191,8 +196,7 @@ private void HandleTouchInput()
 
         }
 
-    }
-    /*
+    }*/
     private void HandlePinch()
     {
         Touch touch0 = Input.GetTouch(0);
@@ -201,27 +205,36 @@ private void HandleTouchInput()
         if (!isPinching)
         {
             initialPinchDistance = Vector2.Distance(touch0.position, touch1.position);
-            initialPinchCenter = (touch0.position + touch1.position) / 2;
+            initialPinchCenter = (touch0.position + touch1.position) / 2; // Ensure initial center is captured
             isPinching = true;
+            Debug.Log("Pinch Started - Initial Distance Set");
         }
-        else if (touch0.phase == TouchPhase.Moved || touch1.phase == TouchPhase.Moved)
+        else if ((touch0.phase == TouchPhase.Moved || touch1.phase == TouchPhase.Moved) && isPinching)
         {
             var currentPinchDistance = Vector2.Distance(touch0.position, touch1.position);
             var pinchChange = currentPinchDistance - initialPinchDistance;
-            var factor = 1 + pinchChange / (pinchSensitivity);
-            factor = Mathf.Clamp(factor, NetworkSettings.Instance.clampMin, NetworkSettings.Instance.clampMax); 
+            var factor = 1.0f; // Start with no change
 
-            HandlePinchZoom(initialPinchCenter, factor);
-            initialPinchDistance = currentPinchDistance;
+            if (Mathf.Abs(pinchChange) > 10) // Only apply changes if the movement is significant
+            {
+                factor += pinchChange / NetworkSettings.Instance.pinchSensitivity;
+                factor = Mathf.Clamp(factor, clampMin, clampMax);
+                HandlePinchZoom(initialPinchCenter, factor);
+                Debug.Log($"Pinch Zoom - Factor: {factor}");
+            }
         }
         else if (touch0.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Ended)
         {
             isPinching = false;
+            isSwipe = false;
+            Debug.Log("Pinch Ended");
         }
-    }*/
+    }
+
+
     private void HandlePinchZoom(Vector2 center, float factor)
     {
-        textPinchFactor.text = factor.ToString();
+        //textPinchFactor.text = factor.ToString();
         Debug.Log("Pinch Zoom at: " + center + " with scale factor: " + factor);
         OnPinchZoomEvent?.Invoke(factor);
     }

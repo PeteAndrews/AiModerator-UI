@@ -1,7 +1,7 @@
 [
     {
         "Iteration" : 0,
-        "Time":"00:00:33,066",
+        "Time":"00:00:25,066",
         "SimilarityScore":null,
         "IsSimilar":false,
         "ResponseTopic":"Topic: Environmental Initiatives and Achievements(Trump discusses his administration's environmental programs and priorities.)",
@@ -21,7 +21,7 @@
     },
     {
         "Iteration" : 2,    
-        "Time":"00:01:04,932",
+        "Time":"00:00:56,932",
         "SimilarityScore":0.7000926733,
         "IsSimilar":true,
         "ResponseTopic":"Topic: Global Environmental Concerns(Trump criticizes the environmental cleanliness of China, Russia, and India.)",
@@ -41,7 +41,7 @@
     },
     {
         "Iteration" : 4,    
-        "Time":"00:01:42,132",
+        "Time":"00:01:34,132",
         "SimilarityScore":0.6052377224,
         "IsSimilar":false,
         "ResponseTopic":"Topic: Paris Accord Commitment Critique(Trump criticizes the timeline and commitments of China and Russia within the Paris Accord compared to the immediate obligations placed on the United States.)",
@@ -61,7 +61,7 @@
     },
     {
         "Iteration" : 6,    
-        "Time":"00:02:30,731",
+        "Time":"00:02:22,731",
         "SimilarityScore":0.5741410255,
         "IsSimilar":false,
         "ResponseTopic":"Topic: Urgency of Climate Action(Biden emphasizes the critical time frame to address climate change and criticizes Trump's deregulation efforts.)",
@@ -81,7 +81,7 @@
     },
     {
         "Iteration" : 8,    
-        "Time":"00:03:32,531",
+        "Time":"00:03:24,531",
         "SimilarityScore":0.5668628216,
         "IsSimilar":false,
         "ResponseTopic":"Topic: Energy Efficiency and Job Creation in Biden's Plan(Biden outlines a plan to retrofit buildings and homes for energy efficiency, highlighting job creation and environmental benefits.)",
@@ -101,7 +101,7 @@
     },
     {
         "Iteration" : 11,    
-        "Time":"00:04:28,030",
+        "Time":"00:04:20,030",
         "SimilarityScore":0.5681243539,
         "IsSimilar":false,
         "ResponseTopic":"Topic: Cost Analysis of the Environmental Plan(Trump claims the environmental plan endorsed by Biden would cost $100 trillion, a figure he deems unrealistic even in the best economic scenarios.)",
@@ -121,7 +121,7 @@
     },
     {
         "Iteration" : 15,    
-        "Time":"00:05:55,296",
+        "Time":"00:05:47,296",
         "SimilarityScore":0.6342514753,
         "IsSimilar":false,
         "ResponseTopic":"Topic: Growth of Renewable Energy Jobs(Biden highlights the rapid growth of solar and wind energy sectors as major sources of goodpaying jobs.)",

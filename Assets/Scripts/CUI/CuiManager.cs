@@ -154,7 +154,7 @@ public class CuiManager : MonoBehaviour
     {
         TabManager.Instance.HandleFollowUpTab();
     }
-    private void HandleSingleTapEvent()
+    public void HandleSingleTapEvent()
     {
         Debug.Log("HandleSingleTap event called and destroying th tab");
         TabManager.Instance.DestroyActiveTab();

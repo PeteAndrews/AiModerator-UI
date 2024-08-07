@@ -70,14 +70,14 @@ public class HyperLinkConverter
                 continue;
 
             stringBuilder.Append($"<link=\"{linkId}\"><color=#FFFDB7>{trimmedElement}</color></link>");
-            stringBuilder.Append(" and ");
+            stringBuilder.Append(" \n");
         }
 
-        if (stringBuilder.Length >= 5)
-            stringBuilder.Remove(stringBuilder.Length - 5, 5);
+        //if (stringBuilder.Length >= 5)
+        //    stringBuilder.Remove(stringBuilder.Length - 5, 5);
 
-        stringBuilder.Append(" for more info.");
-        return stringBuilder.ToString();
+        stringBuilder.Append("for more information.");
+        return "Please select one of the following: \n" + stringBuilder.ToString();
     }
 
     private string ConvertByNumbers(string input, ref string linkId)
@@ -141,7 +141,7 @@ public class ChatManager : MonoBehaviour
         { 
             text = hyperLinkConverter.Convert(text, functionName);
         }
-        AddInteractiveHyperLinkMessage(text);
+        AddInteractiveHyperLinkMessage(text, removeProceeding:false);
     }
 
     public void AddInteractiveHyperLinkMessage(string mainText, bool removeProceeding=true)

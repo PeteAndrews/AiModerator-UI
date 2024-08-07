@@ -20,6 +20,7 @@ public class FunctionButton : MonoBehaviour
     public Sprite activeSprite;
     public Sprite inactiveSprite;
     public Sprite selectedSprite;
+    private BoxCollider2D boxCollider;
 
     private void Awake()
     {
@@ -33,22 +34,25 @@ public class FunctionButton : MonoBehaviour
         if (button != null)
         {
             candidateName = mapCandidateNames[transform.parent.name];
-            button.onClick.AddListener(() => {
-                OnSelect();
-                OnButtonClicked?.Invoke(gameObject.name, candidateName);
-            });
+            button.onClick.AddListener(ButtonClicked);
         }
         else
         {
             Debug.LogError("Button component not found on the object!");
         }
+        boxCollider = GetComponent<BoxCollider2D>();
     }
-
+    private void ButtonClicked()
+    {
+        OnSelect();
+        RemoveListener();
+        //RemoveBoxCollider();
+        OnButtonClicked?.Invoke(gameObject.name, candidateName);
+    }
     private void OnSelect()
     {
         button.interactable = false;
         ChangeButtonSprite(selectedSprite);
-        Debug.Log("Button Clicked");
     }
 
     private void ChangeButtonSprite(Sprite sprite)
@@ -69,8 +73,19 @@ public class FunctionButton : MonoBehaviour
     {
         button.interactable = false;
         ChangeButtonSprite(inactiveSprite);
-    }
 
+    }
+    public void RemoveListener()
+    {
+        button.onClick.RemoveListener(ButtonClicked);
+    }
+    public void RemoveBoxCollider()
+    {
+        if (boxCollider != null)
+        {
+            Destroy(boxCollider);
+        }
+    }
     public void DestroyButton()
     {
         Destroy(gameObject);

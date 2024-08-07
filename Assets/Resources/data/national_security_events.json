@@ -1,7 +1,7 @@
 [
     {
         "Iteration": 0,
-        "Time": "00:00:45,632",
+        "Time": "00:00:37,632",
         "SimilarityScore": 0.6,
         "IsSimilar": false,
         "ResponseTopic": "Foreign Interference in American Elections(Biden emphasizes the seriousness of foreign interference in American elections and pledges to hold accountable any country involved.",
@@ -21,7 +21,7 @@
     },
     {
         "Iteration": 2,
-        "Time": "00:01:37,399",
+        "Time": "00:01:29,399",
         "SimilarityScore": 0.7526517510414124,
         "IsSimilar": true,
         "ResponseTopic": "Topic: Foreign Election Interference and Misinformation(Biden discusses the ongoing issue of foreign interference in U.S. elections, specifically mentioning Rudy Giuliani's involvement with Russian misinformation.)",
@@ -41,7 +41,7 @@
     },
     {
         "Iteration": 4,
-        "Time": "00:02:35,598",
+        "Time": "00:02:27,598",
         "SimilarityScore": 0.6411852836608887,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Allegations of Financial Ties to Russia(Trump accuses Biden of receiving financial benefits from Russia through connections with the former mayor of Moscow.)",
@@ -55,13 +55,13 @@
         "Deflection": "Deflection: Trump  Shifts the discussion from what he would do to address foreign interference to allegations against Biden.",
         "EventWords": "Words: criticize, accuse, allegations, ethics, controversy",
         "Keywords": "Keywords: Russia, Putin, Joe Biden, $3.5 million, former mayor of Moscow, financial ties",
-        "SearchQueries": "Russia AND Putin AND Joe Biden AND Biden AND Moscow",
+        "SearchQueries": "Russia AND Putin AND Biden AND Moscow",
         "Summary" : "Trump Accuses Biden of Having Financial Ties to Russia Through Former Moscow Mayor, Questions Potential Conflicts of Interest",
         "Candidate" : "Trump"
     },
     {
         "Iteration": 6,
-        "Time": "00:03:32,831",
+        "Time": "00:03:24,831",
         "SimilarityScore": 0.5840123295783997,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Trump's Contributions to NATO and Ukraine(Trump highlights his efforts to increase NATO contributions and his decision to sell military equipment to Ukraine as evidence of his tough stance on Russia.)",
@@ -81,7 +81,7 @@
     },
     {
         "Iteration": 9,
-        "Time": "00:04:26,430",
+        "Time": "00:04:18,430",
         "SimilarityScore": 0.5672326683998108,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Call for Explanation on Alleged Corruption(Trump demands Biden explain allegations of corruption and improper financial dealings during his vice presidency, referencing a recent news conference.)",
@@ -101,7 +101,7 @@
     },
     {
         "Iteration": 12,
-        "Time": "00:05:23,263",
+        "Time": "00:05:15,263",
         "SimilarityScore": 0.6293743252754211,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Allegations of Foreign Payments to Trump's Businesses(Biden accuses Trump of receiving significant payments from foreign countries through his businesses.)",
@@ -121,7 +121,7 @@
     },
     {
         "Iteration": 14,
-        "Time": "00:06:03,929",
+        "Time": "00:05:55,929",
         "SimilarityScore": 0.4831570088863373,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Trump's Tax Prepayments(Trump clarifies his tax situation by stating he has prepaid tens of millions of dollars in taxes over the years.)",
@@ -134,14 +134,14 @@
         "PersonalAttack": "Personal Attack: None",
         "Deflection": "Deflection: None",
         "EventWords": "Words: criticize, ethics, documents, reports, controversy, policies",
-        "Keywords": "Keywords: Trump",
-        "SearchQueries": "Trump",
+        "Keywords": "Keywords: Donald Trump",
+        "SearchQueries": "Donald Trump",
         "Summary" : "Trump Asserts He Prepaid Tens of Millions in Taxes to Counter Criticism",
         "Candidate" : "Trump"
     },
     {
         "Iteration": 16,
-        "Time": "00:06:47,229",
+        "Time": "00:06:39,229",
         "SimilarityScore": 0.5863291621208191,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Allegations of Financial Impropriety Involving Biden(Trump accuses Biden of receiving $3.5 million and suggests a requirement to give a percentage to \"the big man,\" implying Biden's involvement.)",
@@ -161,7 +161,7 @@
     },
     {
         "Iteration": 17,
-        "Time": "00:07:19,528",
+        "Time": "00:07:11,528",
         "SimilarityScore": 0.4529801905155182,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Trump's Treatment by the IRS(Trump claims the IRS treats him unfairly, especially after deciding to run for president.)",
@@ -181,7 +181,7 @@
     },
     {
         "Iteration": 19,
-        "Time": "00:08:50,894",
+        "Time": "00:08:42,894",
         "SimilarityScore": 0.5630472898483276,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Trump's Reflection on Mueller Investigation(Trump discusses the financial and investigative extent of the Mueller investigation, emphasizing its cost and the lack of findings related to collusion or wrongdoing.)",
@@ -201,7 +201,7 @@
     },
     {
         "Iteration": 23,
-        "Time": "00:09:54,860",
+        "Time": "00:09:46,860",
         "SimilarityScore": 0.506043553352356,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Biden's Defense on Ukraine and Burisma(Biden defends his actions regarding Ukraine and his son's involvement with Burisma, asserting his integrity and adherence to U.S. policy.)",
@@ -221,7 +221,7 @@
     },
     {
         "Iteration": 25,
-        "Time": "00:10:43,193",
+        "Time": "00:10:35,193",
         "SimilarityScore": 0.5668962597846985,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Allegations Against Biden's Son and Burisma(Trump reiterates allegations regarding Biden's son's employment with Burisma and his compensation, implying impropriety related to Biden's vice presidency.)",
@@ -241,7 +241,7 @@
     },
     {
         "Iteration": 29,
-        "Time": "00:12:07,392",
+        "Time": "00:11:59,392",
         "SimilarityScore": 0.4850226938724518,
         "IsSimilar": false,
         "ResponseTopic": "Topic: Clarification on Trump's Chinese Bank Account(Trump provides details about his Chinese bank account, stating it was opened in 2013 for potential business deals, closed in 2015, and emphasizes his decision not to pursue business in China was made before his presidential run.)",

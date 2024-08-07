@@ -6,10 +6,11 @@ using UnityEngine;
 public class DepthTextManager : MonoBehaviour
 {
     private Dictionary<DetailLevel, string> currentText = new Dictionary<DetailLevel, string>();
-    private float factorLow = 0.75f;
-    private float factorMid = 1.0f;
+    //private float factorLow = 0.75f;
+    //private float factorMid = 1.0f;
 
-
+    private float factorLow = 1.2f;
+    private float factorMid = 1.7f;
     public enum DetailLevel
     {
         Brief, Moderate, Detailed
